@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieSlicer", "MovieSlicer\MovieSlicer.csproj", "{1F36A46B-AA77-4CA7-8CF0-C237C89B2F9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieSlicer", "MovieSlicer\MovieSlicer.csproj", "{1F36A46B-AA77-4CA7-8CF0-C237C89B2F9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageAnalyzer", "ImageAnalyzer\ImageAnalyzer.csproj", "{615BEFE3-3BF3-4835-93B3-AC494DBB2849}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1F36A46B-AA77-4CA7-8CF0-C237C89B2F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F36A46B-AA77-4CA7-8CF0-C237C89B2F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F36A46B-AA77-4CA7-8CF0-C237C89B2F9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{615BEFE3-3BF3-4835-93B3-AC494DBB2849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615BEFE3-3BF3-4835-93B3-AC494DBB2849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615BEFE3-3BF3-4835-93B3-AC494DBB2849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615BEFE3-3BF3-4835-93B3-AC494DBB2849}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
