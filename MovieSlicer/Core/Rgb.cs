@@ -35,11 +35,12 @@ namespace Core
         }
         public Rgb(Color color)
         {
-            R = color.R;
-            G = color.G;
-            B = color.B;
+            R = color.R / 255f;
+            G = color.G / 255f;
+            B = color.B / 255f;
         }
 
+        #region operator
         public static Rgb operator +(Rgb left, Rgb right)
         {
             return new Rgb(left.R + right.R, left.G + right.G, left.B + right.B);
@@ -74,6 +75,7 @@ namespace Core
         {
             return Hsv.ToRgb(hsv);
         }
+        #endregion operator
 
         #region Object
         public override bool Equals(object? other)

@@ -47,7 +47,7 @@ namespace ImageAnalyzer
             {
                 AverageRgb /= area;
             }
-            AverageHsv = Hsv.FromRgb(AverageRgb);
+            AverageHsv = (Hsv)AverageRgb;
         }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
     }

@@ -12,6 +12,20 @@ namespace Core.Tests
     public class RgbTests
     {
         [TestMethod()]
+        public void ConstructorTest()
+        {
+            Rgb rgb = new Rgb(System.Drawing.Color.Red);
+            Assert.AreEqual(Rgb.Red, rgb);
+            rgb = new Rgb(System.Drawing.Color.Lime);
+            Assert.AreEqual(Rgb.Green, rgb);
+            rgb = new Rgb(System.Drawing.Color.Blue);
+            Assert.AreEqual(Rgb.Blue, rgb);
+            rgb = new Rgb(System.Drawing.Color.White);
+            Assert.AreEqual(Rgb.White, rgb);
+            rgb = new Rgb(System.Drawing.Color.Black);
+            Assert.AreEqual(Rgb.Black, rgb);
+        }
+        [TestMethod()]
         public void ConstantsTest()
         {
             // 赤

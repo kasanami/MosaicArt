@@ -9,20 +9,36 @@ namespace Core
     /// </summary>
     public struct Hsv
     {
+        #region 定数
+        public static Hsv Black { get { return new Hsv(0, 0, 0); } }
+        public static Hsv Blue { get { return new Hsv(4f / 6f, 1, 1); } }
+        public static Hsv Cyan { get { return new Hsv(3f / 6f, 1, 1); } }
+        public static Hsv Gray { get { return new Hsv(0, 0, 0.5f); } }
+        public static Hsv Green { get { return new Hsv(2f / 6f, 1, 1); } }
+        /// <summary>
+        /// English spelling for gray.
+        /// </summary>
+        public static Hsv Grey { get { return Gray; } }
+        public static Hsv Magenta { get { return new Hsv(5f / 6f, 1, 1); } }
+        public static Hsv Red { get { return new Hsv(0, 1, 1); } }
+        public static Hsv White { get { return new Hsv(0, 0, 1); } }
+        public static Hsv Yellow { get { return new Hsv(1f / 6f, 1, 1); } }
+        #endregion 定数
+
+        #region フィールド
         /// <summary>
         /// 色相(Hue)
         /// </summary>
         public float H;
-
         /// <summary>
         /// 彩度(Saturation・Chroma)
         /// </summary>
         public float S;
-
         /// <summary>
         /// 明度(Value・Lightness・Brightness)
         /// </summary>
         public float V;
+        #endregion フィールド
 
         /// <summary>
         /// コンストラクタ
@@ -37,6 +53,12 @@ namespace Core
             this.V = v;
         }
 
+        #region operator
+        public static explicit operator Hsv(Rgb rgb)
+        {
+            return Hsv.FromRgb(rgb);
+        }
+        #endregion operator
 
         /// <summary>
         /// RGBからHSVへ変換
@@ -131,22 +153,6 @@ namespace Core
             }
             return new Rgb(r, g, b);
         }
-
-        #region 定数
-        public static Hsv Black { get { return new Hsv(0, 0, 0); } }
-        public static Hsv Blue { get { return new Hsv(4f / 6f, 1, 1); } }
-        public static Hsv Cyan { get { return new Hsv(3f / 6f, 1, 1); } }
-        public static Hsv Gray { get { return new Hsv(0, 0, 0.5f); } }
-        public static Hsv Green { get { return new Hsv(2f / 6f, 1, 1); } }
-        /// <summary>
-        /// English spelling for gray.
-        /// </summary>
-        public static Hsv Grey { get { return Gray; } }
-        public static Hsv Magenta { get { return new Hsv(5f / 6f, 1, 1); } }
-        public static Hsv Red { get { return new Hsv(0, 1, 1); } }
-        public static Hsv White { get { return new Hsv(0, 0, 1); } }
-        public static Hsv Yellow { get { return new Hsv(1f / 6f, 1, 1); } }
-        #endregion 定数
 
         #region Object
         public override bool Equals(object? other)
