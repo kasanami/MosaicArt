@@ -37,15 +37,16 @@ namespace Core
             this.V = v;
         }
 
+
         /// <summary>
-        /// RGBAからHSVへ変換
-        /// ・不透明度は無くなる
+        /// RGBからHSVへ変換
         /// </summary>
-        public static Hsv FromRgb(Color rgb)
+        /// <param name="r">赤色（0.0～1.0）</param>
+        /// <param name="g">緑色（0.0～1.0）</param>
+        /// <param name="b">青色（0.0～1.0）</param>
+        /// <returns>HSV</returns>
+        public static Hsv FromRgb(float r, float g, float b)
         {
-            float r = rgb.R;
-            float g = rgb.G;
-            float b = rgb.B;
             float max = System.Math.Max(r, System.Math.Max(g, b));
             float min = System.Math.Min(r, System.Math.Min(g, b));
             float h = max - min;
@@ -75,12 +76,19 @@ namespace Core
             float v = max;
             return new Hsv(h, s, v);
         }
+        public static Hsv FromRgb(Color color)
+        {
+            return FromRgb(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f);
+        }
+        public static Hsv FromRgb(Rgb rgb)
+        {
+            return FromRgb(rgb.R, rgb.G, rgb.B);
+        }
 
         /// <summary>
-        /// HSVからRGBAへ変換
-        /// ・不透明度は1になる。
+        /// HSVからRGBへ変換
         /// </summary>
-        public static Color ToRgb(Hsv hsv)
+        public static Rgb ToRgb(Hsv hsv)
         {
             float v = hsv.V;
             float s = hsv.S;
@@ -121,27 +129,26 @@ namespace Core
                         break;
                 }
             }
-            return Color .FromArgb((int)(r * 255), (int)(g * 255), (int)(b * 255));
+            return new Rgb(r, g, b);
         }
 
-        public static Hsv black { get { return new Hsv(0, 0, 0); } }
-        public static Hsv blue { get { return new Hsv(4f / 6f, 1, 1); } }
-        public static Hsv cyan { get { return new Hsv(3f / 6f, 1, 1); } }
-        public static Hsv gray { get { return new Hsv(0, 0, 0.5f); } }
-        public static Hsv green { get { return new Hsv(2f / 6f, 1, 1); } }
+        #region 定数
+        public static Hsv Black { get { return new Hsv(0, 0, 0); } }
+        public static Hsv Blue { get { return new Hsv(4f / 6f, 1, 1); } }
+        public static Hsv Cyan { get { return new Hsv(3f / 6f, 1, 1); } }
+        public static Hsv Gray { get { return new Hsv(0, 0, 0.5f); } }
+        public static Hsv Green { get { return new Hsv(2f / 6f, 1, 1); } }
         /// <summary>
         /// English spelling for gray.
         /// </summary>
-        public static Hsv grey { get { return gray; } }
-        public static Hsv magenta { get { return new Hsv(5f / 6f, 1, 1); } }
-        public static Hsv red { get { return new Hsv(0, 1, 1); } }
-        public static Hsv white { get { return new Hsv(0, 0, 1); } }
-        /// <summary>
-        /// UnityEngine.Color.yellow の値が微妙なので、どうしても誤差が発生する。
-        /// </summary>
-        public static Hsv yellow { get { return new Hsv(0.1533865f, 0.9843137f, 1); } }
+        public static Hsv Grey { get { return Gray; } }
+        public static Hsv Magenta { get { return new Hsv(5f / 6f, 1, 1); } }
+        public static Hsv Red { get { return new Hsv(0, 1, 1); } }
+        public static Hsv White { get { return new Hsv(0, 0, 1); } }
+        public static Hsv Yellow { get { return new Hsv(1f / 6f, 1, 1); } }
+        #endregion 定数
 
-
+        #region Object
         public override bool Equals(object? other)
         {
             if (other is Hsv == false)
@@ -177,5 +184,6 @@ namespace Core
         {
             return $"{nameof(Hsv)}{{{H.ToString(format)}, {S.ToString(format)}, {V.ToString(format)}}}";
         }
+        #endregion Object
     }
 }
