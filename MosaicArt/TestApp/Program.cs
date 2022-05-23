@@ -9,7 +9,7 @@ namespace TestApp
         [STAThread]
         static void Main(string[] args)
         {
-            var path = @"";
+            var path = @"D:\Develop\Projects\MosaicArt\TestData\20220427 【original animation MV】マリン出航！！【hololive 宝鐘マリン】.mp4_snapshot_01.15_[2022.05.21_18.15.21].png";
             Bitmap bitmap = new Bitmap(path);
             var width = bitmap.Width;
             var height = bitmap.Height;
