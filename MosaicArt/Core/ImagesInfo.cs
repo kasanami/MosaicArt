@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MosaicArt.ImageAnalyzer
+namespace MosaicArt.Core
 {
     /// <summary>
     /// 複数の画像の情報
