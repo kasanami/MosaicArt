@@ -16,22 +16,38 @@ namespace MosaicArt.Core
     [MessagePackObject(true)]
     public class ImageInfo
     {
-        int Width;
-        int Height;
+        /// <summary>
+        /// ファイルとして保存されている場合のパス。
+        /// アプリケーション内で生成された画像の場合は空文字列;
+        /// </summary>
+        public string Path = string.Empty;
+        public int Width = 0;
+        public int Height = 0;
         /// <summary>
         /// 画像全体の合計色
         /// </summary>
-        Rgb SumRgb = new Rgb();
+        public Rgb SumRgb = new Rgb();
         /// <summary>
         /// 画像全体の平均色
         /// </summary>
-        Rgb AverageRgb = new Rgb();
+        public Rgb AverageRgb = new Rgb();
         /// <summary>
         /// 画像全体の平均色
         /// </summary>
-        Hsv AverageHsv = new Hsv();
+        public Hsv AverageHsv = new Hsv();
+        public ImageInfo()
+        {
+        }
         public ImageInfo(Bitmap bitmap)
         {
+            Path = string.Empty;
+            Width = bitmap.Width;
+            Height = bitmap.Height;
+            Analyze(bitmap);
+        }
+        public ImageInfo(string path, Bitmap bitmap)
+        {
+            Path = path;
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
@@ -54,6 +70,14 @@ namespace MosaicArt.Core
             }
             AverageHsv = (Hsv)AverageRgb;
         }
-#pragma warning restore CA1416 // プラットフォームの互換性を検証
+        /// <summary>
+        /// 比較し結果を実数で返す。
+        /// 0に近いほど近い情報。
+        /// </summary>
+        public double Compare(ImageInfo other)
+        {
+            return Utility.Distance(AverageRgb, other.AverageRgb);
+        }
     }
+#pragma warning restore CA1416 // プラットフォームの互換性を検証
 }
