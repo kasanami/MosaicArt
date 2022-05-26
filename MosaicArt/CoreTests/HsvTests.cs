@@ -12,6 +12,18 @@ namespace Core.Tests
     public class HsvTests
     {
         [TestMethod()]
+        public void ConstructorTest()
+        {
+            Hsv hsv = new Hsv(0, 1, 1);
+            Assert.AreEqual(hsv, Hsv.Red);
+            hsv = new Hsv(1 / 3f, 1, 1);
+            Assert.AreEqual(hsv, Hsv.Green);
+            hsv = new Hsv(2 / 3f, 1, 1);
+            Assert.AreEqual(hsv, Hsv.Blue);
+            hsv = new Hsv(0, 0, 0);
+            Assert.AreEqual(hsv, Hsv.Black);
+        }
+        [TestMethod()]
         public void FromRgbTest()
         {
             // 赤

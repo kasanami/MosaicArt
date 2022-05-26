@@ -9,7 +9,7 @@ namespace Core
     {
         #region 定数
         /// <summary>
-        /// 各パラメーターが0のインスタンスとして使用する。意味的に黒ではない。
+        /// 各パラメーターが0のインスタンスとして使用する。黒しては使用しない。
         /// </summary>
         public static Rgb Zero => new Rgb(0, 0, 0);
 

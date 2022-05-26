@@ -24,6 +24,8 @@ namespace Core.Tests
             Assert.AreEqual(Rgb.White, rgb);
             rgb = new Rgb(System.Drawing.Color.Black);
             Assert.AreEqual(Rgb.Black, rgb);
+            rgb = new Rgb(0, 0, 0);
+            Assert.AreEqual(Rgb.Zero, rgb);
         }
         [TestMethod()]
         public void ConstantsTest()

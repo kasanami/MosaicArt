@@ -10,6 +10,11 @@ namespace Core
     public struct Hsv
     {
         #region 定数
+        /// <summary>
+        /// 各パラメーターが0のインスタンスとして使用する。黒しては使用しない。
+        /// </summary>
+        public static Hsv Zero => new Hsv(0, 0, 0);
+
         public static Hsv Black => new Hsv(0, 0, 0);
         public static Hsv Blue => new Hsv(4f / 6f, 1, 1);
         public static Hsv Cyan => new Hsv(3f / 6f, 1, 1);
