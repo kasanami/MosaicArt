@@ -11,21 +11,21 @@ namespace Core
         /// <summary>
         /// 各パラメーターが0のインスタンスとして使用する。意味的に黒ではない。
         /// </summary>
-        public static Rgb Zero { get { return new Rgb(0, 0, 0); } }
+        public static Rgb Zero => new Rgb(0, 0, 0);
 
-        public static Rgb Black { get { return new Rgb(0, 0, 0); } }
-        public static Rgb Blue { get { return new Rgb(0, 0, 1); } }
-        public static Rgb Cyan { get { return new Rgb(0, 1, 1); } }
-        public static Rgb Gray { get { return new Rgb(0.5f, 0.5f, 0.5f); } }
-        public static Rgb Green { get { return new Rgb(0, 1, 0); } }
+        public static Rgb Black => new Rgb(0, 0, 0);
+        public static Rgb Blue => new Rgb(0, 0, 1);
+        public static Rgb Cyan => new Rgb(0, 1, 1);
+        public static Rgb Gray => new Rgb(0.5f, 0.5f, 0.5f);
+        public static Rgb Green => new Rgb(0, 1, 0);
         /// <summary>
         /// English spelling for gray.
         /// </summary>
-        public static Rgb Grey { get { return Gray; } }
-        public static Rgb Magenta { get { return new Rgb(1, 0, 1); } }
-        public static Rgb Red { get { return new Rgb(1, 0, 0); } }
-        public static Rgb White { get { return new Rgb(1, 1, 1); } }
-        public static Rgb Yellow { get { return new Rgb(1, 1, 0); } }
+        public static Rgb Grey => Gray;
+        public static Rgb Magenta => new Rgb(1, 0, 1);
+        public static Rgb Red => new Rgb(1, 0, 0);
+        public static Rgb White => new Rgb(1, 1, 1);
+        public static Rgb Yellow => new Rgb(1, 1, 0);
         #endregion 定数
 
         public float R;
