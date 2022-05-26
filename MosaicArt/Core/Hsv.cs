@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MessagePack;
+using System;
 using System.Drawing;
 
 namespace MosaicArt.Core
@@ -7,6 +8,7 @@ namespace MosaicArt.Core
     /// HSVの色を表現
     /// ・各要素は0.0～1.0の値
     /// </summary>
+    [MessagePackObject(true)]
     public struct Hsv
     {
         #region 定数

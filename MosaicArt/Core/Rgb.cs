@@ -1,10 +1,12 @@
-﻿using System.Drawing;
+﻿using MessagePack;
+using System.Drawing;
 
 namespace MosaicArt.Core
 {
     /// <summary>
     /// 色
     /// </summary>
+    [MessagePackObject(true)]
     public struct Rgb
     {
         #region 定数
