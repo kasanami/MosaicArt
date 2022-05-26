@@ -86,8 +86,8 @@ namespace MosaicArt.TestApp
                     graphics.PixelOffsetMode =PixelOffsetMode.HighQuality;// OK
 
                     // アンチエイリアスしない 関係ない
-                    graphics.SmoothingMode = SmoothingMode.None;
-                    graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    //graphics.SmoothingMode = SmoothingMode.None;
+                    //graphics.SmoothingMode = SmoothingMode.AntiAlias;
                     graphics.SmoothingMode = SmoothingMode.HighQuality;
 
                     //graphics.Clear(Color.Pink);

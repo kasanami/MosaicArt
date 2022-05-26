@@ -56,6 +56,11 @@ namespace MosaicArt.MovieSlicer
 
             using (var capture = new VideoCapture(path))
             {
+                var directory = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
+                if (Directory.Exists(directory) == false)
+                {
+                    Directory.CreateDirectory(directory);
+                }
                 var img = new Mat();
                 var frameCount = capture.FrameCount - 1;
                 for (int i = 0; i < frameCount; i += interval)
@@ -64,7 +69,7 @@ namespace MosaicArt.MovieSlicer
                     capture.Read(img);
                     var bitmap = BitmapConverter.ToBitmap(img);
                     var resizeBitmap = new Bitmap(bitmap, width, height);
-                    resizeBitmap.Save($@"{path}_{i}.png", ImageFormat.Png);
+                    resizeBitmap.Save($@"{directory}/{i}.png", ImageFormat.Png);
                     Console.WriteLine($"PosFrames={i}");
                 }
             }

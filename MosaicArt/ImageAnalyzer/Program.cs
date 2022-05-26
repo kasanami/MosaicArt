@@ -10,7 +10,7 @@ public class Program
         var file = @"D:\Develop\Projects\MosaicArt\TestData\Target1";
         {
             var bitmap = new Bitmap(file);
-            var imageInfo = new ImageInfo(bitmap);
+            //var imageInfo = new ImageInfo(bitmap);
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
