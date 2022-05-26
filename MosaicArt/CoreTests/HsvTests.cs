@@ -15,13 +15,14 @@ namespace Core.Tests
         public void ConstructorTest()
         {
             Hsv hsv = new Hsv(0, 1, 1);
-            Assert.AreEqual(hsv, Hsv.Red);
+            Assert.AreEqual(Hsv.Red, hsv);
             hsv = new Hsv(1 / 3f, 1, 1);
-            Assert.AreEqual(hsv, Hsv.Green);
+            Assert.AreEqual(Hsv.Green, hsv);
             hsv = new Hsv(2 / 3f, 1, 1);
-            Assert.AreEqual(hsv, Hsv.Blue);
+            Assert.AreEqual(Hsv.Blue, hsv);
             hsv = new Hsv(0, 0, 0);
-            Assert.AreEqual(hsv, Hsv.Black);
+            Assert.AreEqual(Hsv.Black, hsv);
+            Assert.AreEqual(Hsv.Zero, hsv);
         }
         [TestMethod()]
         public void FromRgbTest()
