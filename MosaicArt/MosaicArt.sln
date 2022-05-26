@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreTests", "CoreTests\Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{CEB7029D-44A1-4882-A0E3-BE69983358DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyMaker", "DummyMaker\DummyMaker.csproj", "{4561863B-EC08-4788-9C00-25E43B1170D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{CEB7029D-44A1-4882-A0E3-BE69983358DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEB7029D-44A1-4882-A0E3-BE69983358DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEB7029D-44A1-4882-A0E3-BE69983358DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4561863B-EC08-4788-9C00-25E43B1170D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4561863B-EC08-4788-9C00-25E43B1170D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4561863B-EC08-4788-9C00-25E43B1170D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4561863B-EC08-4788-9C00-25E43B1170D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
