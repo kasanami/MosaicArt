@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 
-namespace MovieSlicer
+namespace MosaicArt.MovieSlicer
 {
     static class Program
     {

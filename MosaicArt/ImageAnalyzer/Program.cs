@@ -1,10 +1,17 @@
-﻿using ImageAnalyzer;
-using System.Drawing;
+﻿using System.Drawing;
 
-//var files =Directory.GetFiles(@"C:\Users\bigta\Videos\4K Video Downloader\_");
-//foreach (var file in files)
-var file = @"C:\Users\bigta\Videos\4K Video Downloader\_\20220427 【original animation MV】マリン出航！！【hololive 宝鐘マリン】.mp4_3410.png";
+namespace MosaicArt.ImageAnalyzer;
+
+public class Program
 {
-    var bitmap = new Bitmap(file);
-    var imageInfo = new ImageInfo(bitmap);
+#pragma warning disable CA1416 // プラットフォームの互換性を検証
+    public static void Main()
+    {
+        var file = @"D:\Develop\Projects\MosaicArt\TestData\Target1";
+        {
+            var bitmap = new Bitmap(file);
+            var imageInfo = new ImageInfo(bitmap);
+        }
+    }
+#pragma warning restore CA1416 // プラットフォームの互換性を検証
 }

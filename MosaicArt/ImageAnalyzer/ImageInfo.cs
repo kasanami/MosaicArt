@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using MosaicArt.Core;
 using MessagePack;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageAnalyzer
+namespace MosaicArt.ImageAnalyzer
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     /// <summary>

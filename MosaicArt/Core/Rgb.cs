@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Core
+namespace MosaicArt.Core
 {
     /// <summary>
     /// 色

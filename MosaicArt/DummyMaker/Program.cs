@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
-using static Core.Utility;
+using static MosaicArt.Core.Utility;
 
-namespace DummyMaker
+namespace MosaicArt.DummyMaker
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     static class Program
