@@ -8,6 +8,11 @@ namespace Core
     public struct Rgb
     {
         #region 定数
+        /// <summary>
+        /// 各パラメーターが0のインスタンスとして使用する。意味的に黒ではない。
+        /// </summary>
+        public static Rgb Zero { get { return new Rgb(0, 0, 0); } }
+
         public static Rgb Black { get { return new Rgb(0, 0, 0); } }
         public static Rgb Blue { get { return new Rgb(0, 0, 1); } }
         public static Rgb Cyan { get { return new Rgb(0, 1, 1); } }

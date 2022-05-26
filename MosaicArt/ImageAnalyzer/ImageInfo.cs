@@ -19,6 +19,10 @@ namespace ImageAnalyzer
         int Width;
         int Height;
         /// <summary>
+        /// 画像全体の合計色
+        /// </summary>
+        Rgb SumRgb = new Rgb();
+        /// <summary>
         /// 画像全体の平均色
         /// </summary>
         Rgb AverageRgb = new Rgb();
@@ -34,18 +38,19 @@ namespace ImageAnalyzer
         }
         private void Analyze(Bitmap bitmap)
         {
+            SumRgb = Rgb.Zero;
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
                     var pixel = bitmap.GetPixel(x, y);
-                    AverageRgb += pixel;
+                    SumRgb += pixel;
                 }
             }
             var area = Width * Height;
             if (area > 0)
             {
-                AverageRgb /= area;
+                AverageRgb = SumRgb / area;
             }
             AverageHsv = (Hsv)AverageRgb;
         }
