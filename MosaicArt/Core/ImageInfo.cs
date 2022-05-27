@@ -16,6 +16,10 @@ namespace MosaicArt.Core
     [MessagePackObject(true)]
     public class ImageInfo
     {
+        #region 定数
+        const int CompressedImageWidth = 8;
+        const int CompressedImageHeight = 8;
+        #endregion 定数
         /// <summary>
         /// ファイルとして保存されている場合のパス。
         /// アプリケーション内で生成された画像の場合は空文字列;
@@ -26,15 +30,19 @@ namespace MosaicArt.Core
         /// <summary>
         /// 画像全体の合計色
         /// </summary>
-        public Rgb SumRgb = new Rgb();
+        public Rgb SumRgb = new();
         /// <summary>
         /// 画像全体の平均色
         /// </summary>
-        public Rgb AverageRgb = new Rgb();
+        public Rgb AverageRgb = new();
         /// <summary>
         /// 画像全体の平均色
         /// </summary>
-        public Hsv AverageHsv = new Hsv();
+        public Hsv AverageHsv = new();
+        /// <summary>
+        /// 圧縮した画像
+        /// </summary>
+        public CompressedImage CompressedImage = new();
         public ImageInfo()
         {
         }
@@ -44,6 +52,7 @@ namespace MosaicArt.Core
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
+            CompressedImage = new CompressedImage(bitmap, CompressedImageWidth, CompressedImageHeight);
         }
         public ImageInfo(string path, Bitmap bitmap)
         {
