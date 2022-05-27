@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using MessagePack;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace MosaicArt.Core
@@ -6,6 +7,7 @@ namespace MosaicArt.Core
     /// <summary>
     /// 8ビットのRGB情報（各値が赤3ビット、緑3ビット、青2ビット）
     /// </summary>
+    [MessagePackObject(true)]
     public struct Rgb332
     {
         #region 定数
@@ -33,16 +35,19 @@ namespace MosaicArt.Core
         #endregion フィールド
 
         #region プロパティ
+        [IgnoreMember]
         public int R
         {
             get { return (byte)(Bits >> GBBitsCount); }
             set { Bits = (byte)((Bits & ~RBitsMask) | (value << GBBitsCount)); }
         }
+        [IgnoreMember]
         public int G
         {
             get { return (byte)((Bits & GBitsMask) >> BBitsCount); }
             set { Bits = (byte)((Bits & ~GBitsMask) | (value << BBitsCount) & GBitsMask); }
         }
+        [IgnoreMember]
         public int B
         {
             get { return (byte)(Bits & BBitsMask); }
@@ -57,11 +62,18 @@ namespace MosaicArt.Core
             G = g;
             B = b;
         }
-        public Rgb332(Color color) : this(color.R, color.G, color.B)
+        public Rgb332(Color color)
         {
+            R = color.R >> 5;
+            G = color.G >> 5;
+            B = color.B >> 6;
         }
         public Rgb332(Rgb rgb) : this((int)(rgb.R * RMax), (int)(rgb.G * GMax), (int)(rgb.B * BMax))
         {
+        }
+        public Rgb332(byte bits)
+        {
+            Bits = bits;
         }
         #endregion コンストラクタ
 
@@ -79,9 +91,26 @@ namespace MosaicArt.Core
         {
             return new Rgb332(color);
         }
+        public static implicit operator Color(Rgb332 rgb)
+        {
+            // 3ビットを8ビットに拡張する。(0b00000111 →　0b111_111_11)
+            var r = (rgb.R << 5) | (rgb.R << 2) | (rgb.R >> 1);
+            var g = (rgb.G << 5) | (rgb.G << 2) | (rgb.G >> 1);
+            // 2ビットを8ビットに拡張する。(0b00000011 →　0b11_11_11_11)
+            var b = (rgb.B << 6) | (rgb.B << 4) | (rgb.B << 2) | rgb.B;
+            return Color.FromArgb(r, g, b);
+        }
         public static explicit operator Rgb332(Rgb rgb)
         {
             return new Rgb332(rgb);
+        }
+        public static implicit operator byte(Rgb332 rgb)
+        {
+            return rgb.Bits;
+        }
+        public static implicit operator Rgb332(byte bits)
+        {
+            return new Rgb332(bits);
         }
         #endregion operator
     }
