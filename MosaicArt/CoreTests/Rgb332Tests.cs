@@ -58,6 +58,31 @@ namespace MosaicArt.Core.Tests
                 Assert.AreEqual(Rgb332.RMax, rgb.R);
                 Assert.AreEqual(Rgb332.GMax, rgb.G);
             }
+
+            rgb = Rgb332.Zero;
+            for (int i = 0; i <= Rgb332.RMax; i++)
+            {
+                rgb.R = i;
+                Assert.AreEqual(i, rgb.R);
+                Assert.AreEqual(0, rgb.G);
+                Assert.AreEqual(0, rgb.B);
+            }
+            rgb = Rgb332.Zero;
+            for (int i = 0; i <= Rgb332.GMax; i++)
+            {
+                rgb.G = i;
+                Assert.AreEqual(0, rgb.R);
+                Assert.AreEqual(i, rgb.G);
+                Assert.AreEqual(0, rgb.B);
+            }
+            rgb = Rgb332.Zero;
+            for (int i = 0; i <= Rgb332.BMax; i++)
+            {
+                rgb.B = i;
+                Assert.AreEqual(0, rgb.R);
+                Assert.AreEqual(0, rgb.G);
+                Assert.AreEqual(i, rgb.B);
+            }
         }
     }
 }
