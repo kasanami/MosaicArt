@@ -20,10 +20,10 @@ namespace MosaicArt.MovieSlicer
                 return;
             }
             var path = args[0];
-            int interval;
+            int count;
             int width;
             int height;
-            if (int.TryParse(args[1], out interval) == false)
+            if (int.TryParse(args[1], out count) == false)
             {
                 Console.WriteLine($"args[1]がint型へ変換できません。");
                 return;
@@ -38,9 +38,9 @@ namespace MosaicArt.MovieSlicer
                 Console.WriteLine($"args[3]がint型へ変換できません。");
                 return;
             }
-            if (interval <= 0)
+            if (count <= 0)
             {
-                Console.WriteLine($"{nameof(interval)}が0以下です。");
+                Console.WriteLine($"{nameof(count)}が0以下です。");
                 return;
             }
             if (width <= 0)
@@ -62,7 +62,12 @@ namespace MosaicArt.MovieSlicer
                     Directory.CreateDirectory(directory);
                 }
                 var img = new Mat();
-                var frameCount = capture.FrameCount - 1;
+                var frameCount = capture.FrameCount - 1;// 実際に使えるのは1フレーム少ない
+                if (count > frameCount)
+                {
+                    count = frameCount;
+                }
+                var interval = frameCount / count;
                 for (int i = 0; i < frameCount; i += interval)
                 {
                     capture.PosFrames = i;
