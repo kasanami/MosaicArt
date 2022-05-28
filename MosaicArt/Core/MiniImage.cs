@@ -1,11 +1,6 @@
 ﻿using MessagePack;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MosaicArt.Core
 {
@@ -16,9 +11,13 @@ namespace MosaicArt.Core
     [MessagePackObject(true)]
     public class MiniImage
     {
+        /// <summary>
+        /// 1ピクセル3バイト
+        /// </summary>
+        const int PixelSize = 3;
         public int Width = 0;
         public int Height = 0;
-        public List<byte> Pixels = new();
+        public List<byte> Bytes = new();
         public MiniImage()
         {
         }
@@ -31,7 +30,9 @@ namespace MosaicArt.Core
                 for (int x = 0; x < Width; x++)
                 {
                     var color = bitmap.GetPixel(x, y);
-                    Pixels.Add((Rgb332)color);
+                    Bytes.Add(color.R);
+                    Bytes.Add(color.G);
+                    Bytes.Add(color.B);
                 }
             }
         }
@@ -45,17 +46,26 @@ namespace MosaicArt.Core
                 for (int x = 0; x < width; x++)
                 {
                     var color = bitmap2.GetPixel(x, y);
-                    Pixels.Add((Rgb332)color);
+                    Bytes.Add(color.R);
+                    Bytes.Add(color.G);
+                    Bytes.Add(color.B);
                 }
             }
         }
-        public Rgb332 GetPixel(int x, int y)
+        public Color GetPixel(int x, int y)
         {
-            return (Rgb332)Pixels[(y * Width) + x];
+            int offset = ((y * Width) + x) * PixelSize;
+            var r = Bytes[offset + 0];
+            var g = Bytes[offset + 1];
+            var b = Bytes[offset + 2];
+            return Color.FromArgb(r, g, b);
         }
-        public void SetPixel(int x, int y, Rgb332 rgb)
+        public void SetPixel(int x, int y, Color color)
         {
-            Pixels[(y * Width) + x] = rgb;
+            int offset = ((y * Width) + x) * PixelSize;
+            Bytes[offset + 0] = color.R;
+            Bytes[offset + 1] = color.G;
+            Bytes[offset + 2] = color.B;
         }
         public Bitmap ToBitmap()
         {
@@ -73,7 +83,7 @@ namespace MosaicArt.Core
 
         public void Save(string path, ImageFormat imageFormat)
         {
-            var bitmap= ToBitmap();
+            var bitmap = ToBitmap();
             bitmap.Save(path, imageFormat);
         }
     }

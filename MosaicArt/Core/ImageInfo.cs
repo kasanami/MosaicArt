@@ -90,11 +90,12 @@ namespace MosaicArt.Core
         public static double Distance(MiniImage image0, MiniImage image1)
         {
             double sum = 0;
-            for (int i = 0; i < image0.Pixels.Count; i++)
+            for (int i = 0; i < image0.Bytes.Count; i++)
             {
-                sum += Utility.Distance((Rgb332)image0.Pixels[i], (Rgb332)image1.Pixels[i]);
+                var diff = image0.Bytes[i] - image1.Bytes[i];
+                sum += diff * diff;
             }
-            return sum;
+            return Math.Sqrt(sum);
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
