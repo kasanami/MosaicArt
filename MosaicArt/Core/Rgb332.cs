@@ -64,11 +64,11 @@ namespace MosaicArt.Core
         }
         public Rgb332(Color color)
         {
-            R = color.R >> 5;
-            G = color.G >> 5;
-            B = color.B >> 6;
+            R = Utility.ElasticityBits8To3Array[color.R];
+            G = Utility.ElasticityBits8To3Array[color.G];
+            B = Utility.ElasticityBits8To2Array[color.B];
         }
-        public Rgb332(Rgb rgb) : this((int)(rgb.R * RMax), (int)(rgb.G * GMax), (int)(rgb.B * BMax))
+        public Rgb332(Rgb rgb) : this((int)Math.Round(rgb.R * RMax), (int)Math.Round(rgb.G * GMax), (int)Math.Round(rgb.B * BMax))
         {
         }
         public Rgb332(byte bits)
@@ -94,10 +94,10 @@ namespace MosaicArt.Core
         public static implicit operator Color(Rgb332 rgb)
         {
             // 3ビットを8ビットに拡張する。(0b00000111 →　0b111_111_11)
-            var r = (rgb.R << 5) | (rgb.R << 2) | (rgb.R >> 1);
-            var g = (rgb.G << 5) | (rgb.G << 2) | (rgb.G >> 1);
             // 2ビットを8ビットに拡張する。(0b00000011 →　0b11_11_11_11)
-            var b = (rgb.B << 6) | (rgb.B << 4) | (rgb.B << 2) | rgb.B;
+            var r = Utility.ElasticityBits8To3Array[rgb.R];
+            var g = Utility.ElasticityBits8To3Array[rgb.G];
+            var b = Utility.ElasticityBits8To2Array[rgb.B];
             return Color.FromArgb(r, g, b);
         }
         public static explicit operator Rgb332(Rgb rgb)
