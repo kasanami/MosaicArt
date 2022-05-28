@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,15 +14,15 @@ namespace MosaicArt.Core
     /// 圧縮した画像
     /// </summary>
     [MessagePackObject(true)]
-    public class CompressedImage
+    public class MiniImage
     {
         public int Width = 0;
         public int Height = 0;
         public List<byte> Pixels = new();
-        public CompressedImage()
+        public MiniImage()
         {
         }
-        public CompressedImage(Bitmap bitmap)
+        public MiniImage(Bitmap bitmap)
         {
             Width = bitmap.Width;
             Height = bitmap.Height;
@@ -34,7 +35,7 @@ namespace MosaicArt.Core
                 }
             }
         }
-        public CompressedImage(Bitmap bitmap, int width, int height)
+        public MiniImage(Bitmap bitmap, int width, int height)
         {
             Bitmap bitmap2 = bitmap.Resize(width, height);
             Width = width;
@@ -68,6 +69,12 @@ namespace MosaicArt.Core
                 }
             }
             return bitmap;
+        }
+
+        public void Save(string path, ImageFormat imageFormat)
+        {
+            var bitmap= ToBitmap();
+            bitmap.Save(path, imageFormat);
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証

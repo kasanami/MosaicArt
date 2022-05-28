@@ -1,11 +1,5 @@
-﻿using MosaicArt.Core;
-using MessagePack;
-using System;
-using System.Collections.Generic;
+﻿using MessagePack;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MosaicArt.Core
 {
@@ -42,7 +36,7 @@ namespace MosaicArt.Core
         /// <summary>
         /// 圧縮した画像
         /// </summary>
-        public CompressedImage CompressedImage = new();
+        public MiniImage MiniImage = new();
         public ImageInfo()
         {
         }
@@ -52,7 +46,7 @@ namespace MosaicArt.Core
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
-            CompressedImage = new CompressedImage(bitmap, CompressedImageWidth, CompressedImageHeight);
+            MiniImage = new MiniImage(bitmap, CompressedImageWidth, CompressedImageHeight);
         }
         public ImageInfo(string path, Bitmap bitmap)
         {
@@ -85,7 +79,22 @@ namespace MosaicArt.Core
         /// </summary>
         public double Compare(ImageInfo other)
         {
-            return Utility.Distance(AverageRgb, other.AverageRgb);
+            double sum = 0;
+            sum += Distance(MiniImage, other.MiniImage);
+            //sum += Utility.Distance(AverageRgb, other.AverageRgb);
+            return sum;
+        }
+        /// <summary>
+        /// 色空間内での距離
+        /// </summary
+        public static double Distance(MiniImage image0, MiniImage image1)
+        {
+            double sum = 0;
+            for (int i = 0; i < image0.Pixels.Count; i++)
+            {
+                sum += Utility.Distance((Rgb332)image0.Pixels[i], (Rgb332)image1.Pixels[i]);
+            }
+            return sum;
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
