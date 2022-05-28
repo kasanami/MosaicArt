@@ -95,9 +95,9 @@ namespace MosaicArt.Core
         {
             // 3ビットを8ビットに拡張する。(0b00000111 →　0b111_111_11)
             // 2ビットを8ビットに拡張する。(0b00000011 →　0b11_11_11_11)
-            var r = Utility.ElasticityBits8To3Array[rgb.R];
-            var g = Utility.ElasticityBits8To3Array[rgb.G];
-            var b = Utility.ElasticityBits8To2Array[rgb.B];
+            var r = Utility.ElasticityBits3To8Array[rgb.R];
+            var g = Utility.ElasticityBits3To8Array[rgb.G];
+            var b = Utility.ElasticityBits2To8Array[rgb.B];
             return Color.FromArgb(r, g, b);
         }
         public static explicit operator Rgb332(Rgb rgb)
