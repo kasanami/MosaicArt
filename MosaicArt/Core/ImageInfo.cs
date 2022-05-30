@@ -54,6 +54,7 @@ namespace MosaicArt.Core
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
+            MiniImage = new MiniImage(bitmap, CompressedImageWidth, CompressedImageHeight);
         }
         private void Analyze(Bitmap bitmap)
         {
