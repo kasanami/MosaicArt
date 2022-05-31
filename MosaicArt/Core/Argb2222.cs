@@ -114,8 +114,6 @@ namespace MosaicArt.Core
         }
         public static implicit operator Color(Argb2222 rgb)
         {
-            // 3ビットを8ビットに拡張する。(0b00000111 →　0b111_111_11)
-            // 2ビットを8ビットに拡張する。(0b00000011 →　0b11_11_11_11)
             var a = Utility.ElasticityBits2To8Array[rgb.A];
             var r = Utility.ElasticityBits2To8Array[rgb.R];
             var g = Utility.ElasticityBits2To8Array[rgb.G];
