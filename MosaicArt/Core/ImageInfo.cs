@@ -1,5 +1,6 @@
 ﻿using MessagePack;
 using System.Drawing;
+using System.Text;
 
 namespace MosaicArt.Core
 {
@@ -10,10 +11,7 @@ namespace MosaicArt.Core
     [MessagePackObject(true)]
     public class ImageInfo
     {
-        #region 定数
-        const int CompressedImageWidth = 8;
-        const int CompressedImageHeight = 8;
-        #endregion 定数
+
         /// <summary>
         /// ファイルとして保存されている場合のパス。
         /// アプリケーション内で生成された画像の場合は空文字列;
@@ -36,7 +34,7 @@ namespace MosaicArt.Core
         /// <summary>
         /// 圧縮した画像
         /// </summary>
-        public MiniImage MiniImage = new();
+        public MonochromeImage4x4 MiniImage = new();
         public ImageInfo()
         {
         }
@@ -46,7 +44,7 @@ namespace MosaicArt.Core
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
-            MiniImage = new MiniImage(bitmap, CompressedImageWidth, CompressedImageHeight);
+            MiniImage = new(bitmap);
         }
         public ImageInfo(string path, Bitmap bitmap)
         {
@@ -54,7 +52,7 @@ namespace MosaicArt.Core
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
-            MiniImage = new MiniImage(bitmap, CompressedImageWidth, CompressedImageHeight);
+            MiniImage = new(bitmap);
         }
         private void Analyze(Bitmap bitmap)
         {
@@ -80,9 +78,11 @@ namespace MosaicArt.Core
         /// </summary>
         public double Compare(ImageInfo other)
         {
+            // 1ピクセルの重みに注意（1ピクセル=1）
             double sum = 0;
-            sum += Distance(MiniImage, other.MiniImage);
-            //sum += Utility.Distance(AverageRgb, other.AverageRgb);
+            //sum += Distance(MiniImage, other.MiniImage);
+            sum += Utility.Distance(AverageRgb, other.AverageRgb);
+            sum += MonochromeImage4x4.PixelCount - MiniImage.MatchCount(other.MiniImage);// 全一致なら0となる
             return sum;
         }
         /// <summary>

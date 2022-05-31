@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MessagePack;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MosaicArt.Core
 {
@@ -11,9 +7,12 @@ namespace MosaicArt.Core
     /// <summary>
     /// 4x4ピクセルのモノクロ画像
     /// </summary>
+    [MessagePackObject(true)]
     public class MonochromeImage4x4 : AbstractImage
     {
-        const byte HalfLuminance = 128;
+        public const byte HalfLuminance = 128;
+
+        public const byte PixelCount = 16;
 
         public override int Width { get; set; } = 4;
         public override int Height { get; set; } = 4;
@@ -80,7 +79,7 @@ namespace MosaicArt.Core
             }
         }
         /// <summary>
-        /// 一致しているビットの数
+        /// 一致しているピクセルの数
         /// </summary>
         public int MatchCount(MonochromeImage4x4 other)
         {
