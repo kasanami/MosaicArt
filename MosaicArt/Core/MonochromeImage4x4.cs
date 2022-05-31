@@ -24,6 +24,9 @@ namespace MosaicArt.Core
         /// 配列で例えると[y * Width + x]
         /// </summary>
         public UInt16 Bits = 0;
+        public MonochromeImage4x4()
+        {
+        }
 
         public MonochromeImage4x4(Bitmap bitmap)
         {
@@ -75,6 +78,13 @@ namespace MosaicArt.Core
             {
                 Bits &= (UInt16)~mask;
             }
+        }
+        /// <summary>
+        /// 一致しているビットの数
+        /// </summary>
+        public int MatchCount(MonochromeImage4x4 other)
+        {
+            return Utility.MatchCount(Bits, other.Bits);
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
