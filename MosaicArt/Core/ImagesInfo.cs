@@ -1,10 +1,6 @@
 ﻿using MessagePack;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MosaicArt.Core
 {
@@ -13,13 +9,21 @@ namespace MosaicArt.Core
     /// 複数の画像の情報
     /// </summary>
     [MessagePackObject(true)]
-    public class ImagesInfo
+    public class ImagesInfo : VersionInfo
     {
+        #region 定数
+        public const int CurrentVersion = 1;
+        /// <summary>
+        /// 拡張子
+        /// </summary>
+        public const string PathExtension = ".imagesinfo";
+        #endregion 定数
+
         public List<ImageInfo> ImageInfos { get; init; } = new List<ImageInfo>();
-        public ImagesInfo()
+        public ImagesInfo() : base(CurrentVersion)
         {
         }
-        public ImagesInfo(string directory)
+        public ImagesInfo(string directory) : base(CurrentVersion)
         {
             var files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
             foreach (var file in files)

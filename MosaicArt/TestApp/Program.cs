@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using MessagePack;
 using MosaicArt.Core;
 using static MosaicArt.Core.Utility;
 
@@ -12,18 +13,37 @@ namespace MosaicArt.TestApp
         [STAThread]
         static void Main(string[] args)
         {
+            int divisionsX = 40;
+            int divisionsY = 40;
+
             Console.WriteLine("素材分析");
-            bool isRemake = false;
-            ImagesInfo imagesInfo;
-            const string ImagesInfoPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource.imagesinfo";
-            if (File.Exists(ImagesInfoPath) && isRemake == false)
+            ImagesInfo imagesInfo = new ImagesInfo();
+            const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
+            var directories = Directory.GetDirectories(DirectoryPath);
+            foreach (var d in directories)
             {
-                imagesInfo = ImagesInfo.Load(ImagesInfoPath);
-            }
-            else
-            {
-                imagesInfo = new ImagesInfo(@"D:\Develop\Projects\MosaicArt\TestData\Resource");
-                imagesInfo.Save(ImagesInfoPath);
+                bool newCreate = true;
+                // 既存のImagesInfoを確認
+                // 無いorVersionが古かったら作成する。
+                var path = d + ImagesInfo.PathExtension;
+                if (File.Exists(path))
+                {
+                    // ImageInfoがあればVersionを確認
+                    var info = VersionInfo.Load(path);
+                    if (info.Version == ImagesInfo.CurrentVersion)
+                    {
+                        var imagesInfo2 = ImagesInfo.Load(path);
+                        imagesInfo.ImageInfos.AddRange(imagesInfo2.ImageInfos);
+                        newCreate = false;
+                    }
+                }
+                // 新規作成
+                if (newCreate)
+                {
+                    var imagesInfo2 = new ImagesInfo(d);
+                    imagesInfo.ImageInfos.AddRange(imagesInfo2.ImageInfos);
+                    imagesInfo2.Save(path);
+                }
             }
             if (imagesInfo.ImageInfos.Count <= 0)
             {
@@ -34,8 +54,6 @@ namespace MosaicArt.TestApp
             Dictionary<Point, ImageInfo?> bluePrint = new Dictionary<Point, ImageInfo?>();
             int bluePrintWidth;
             int bluePrintHeight;
-            int divisionsX = 40;
-            int divisionsY = 40;
             var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\400x400.jpg";
             // targetの分析、resourceと比較
             Console.WriteLine("分析");
@@ -83,7 +101,7 @@ namespace MosaicArt.TestApp
                     //graphics.PixelOffsetMode = PixelOffsetMode.None;// 1/4しか描画されない
                     //graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;// 1/4しか描画されない
                     //graphics.PixelOffsetMode = PixelOffsetMode.Half;// OK
-                    graphics.PixelOffsetMode =PixelOffsetMode.HighQuality;// OK
+                    graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;// OK
 
                     // アンチエイリアスしない 関係ない
                     //graphics.SmoothingMode = SmoothingMode.None;
@@ -112,20 +130,22 @@ namespace MosaicArt.TestApp
             Console.WriteLine("完了");
         }
 
-        static void ImageSlicer(string imagePath)
+        static void ImageSlicer(string imagePath, int divisionsX, int divisionsY)
         {
+            var directoryPath = Path.GetDirectoryName(imagePath) + "/" + Path.GetFileNameWithoutExtension(imagePath);
+            Directory.CreateDirectory(directoryPath);
             Bitmap bitmap = new Bitmap(imagePath);
             var width = bitmap.Width;
             var height = bitmap.Height;
-            var w = bitmap.Width / 60;
-            var h = bitmap.Height / 60;
+            var w = bitmap.Width / divisionsX;
+            var h = bitmap.Height / divisionsY;
             for (int y = 0; y < height; y += h)
             {
                 for (int x = 0; x < width; x += w)
                 {
                     var rect = new Rectangle(x, y, w, h);
-                    var clippedBitmap = bitmap.Clone(rect, bitmap.PixelFormat);
-                    clippedBitmap.Save($@"{imagePath}_({x},{y}).png", ImageFormat.Png);
+                    var clippedBitmap = bitmap.Clip(rect);
+                    clippedBitmap.Save($@"{directoryPath}/{x}_{y}.png", ImageFormat.Png);
                 }
             }
         }
