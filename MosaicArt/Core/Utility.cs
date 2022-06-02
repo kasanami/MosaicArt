@@ -8,6 +8,8 @@ namespace MosaicArt.Core
         /// <summary>
         /// 色空間内での距離
         /// ※Color の各値の範囲は 0～255 なので注意
+        /// NOTE:最大値、α値も含めた場合　510 となる。
+        /// α値を除くと、441.672955930063709849498817084となる。
         /// </summary
         public static double Distance(Color color0, Color color1)
         {
@@ -36,6 +38,16 @@ namespace MosaicArt.Core
             var g = color0.G - color1.G;
             var b = color0.B - color1.B;
             return Math.Sqrt(r * r + g * g + b * b);
+        }
+        /// <summary>
+        /// 色空間内での距離
+        /// </summary
+        public static double Distance(Hsv color0, Hsv color1)
+        {
+            var h = color0.H - color1.H;
+            var s = color0.S - color1.S;
+            var v = color0.V - color1.V;
+            return Math.Sqrt(h * h + s * s + v * v);
         }
         /// <summary>
         /// 符号なし32ビット整数からColorを生成する。
