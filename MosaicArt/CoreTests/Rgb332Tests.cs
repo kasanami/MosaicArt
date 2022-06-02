@@ -32,6 +32,8 @@ namespace MosaicArt.Core.Tests
             Assert.AreEqual(0b0000_0100, rgb.Bits);
             rgb = new Rgb332(0, 0, 1);
             Assert.AreEqual(0b0000_0001, rgb.Bits);
+            rgb = new Rgb332(0, 0, 0);
+            Assert.AreEqual(0b0000_0000, rgb.Bits);
         }
         [TestMethod()]
         public void PropertiesTest()
