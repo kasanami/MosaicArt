@@ -122,27 +122,48 @@ namespace MosaicArt.Core.Tests
             }
 
             {
-                Rgb332 rgb = (Rgb332)Color.Red;
-                Color color = (Color)rgb;
-                Assert.AreEqual(Color.Red.R, color.R);
-                Assert.AreEqual(Color.Red.G, color.G);
-                Assert.AreEqual(Color.Red.B, color.B);
+                Color color0 = Color.Red;
+                Rgb332 rgb = (Rgb332)color0;
+                Color color1 = (Color)rgb;
+                Assert.AreEqual(color0.R, color1.R);
+                Assert.AreEqual(color0.G, color1.G);
+                Assert.AreEqual(color0.B, color1.B);
             }
 
             {
-                Rgb332 rgb = (Rgb332)Color.White;
-                Color color = (Color)rgb;
-                Assert.AreEqual(Color.White.R, color.R);
-                Assert.AreEqual(Color.White.G, color.G);
-                Assert.AreEqual(Color.White.B, color.B);
+                Color color0 = Color.FromArgb(0, 255, 0);
+                Rgb332 rgb = (Rgb332)color0;
+                Color color1 = (Color)rgb;
+                Assert.AreEqual(color0.R, color1.R);
+                Assert.AreEqual(color0.G, color1.G);
+                Assert.AreEqual(color0.B, color1.B);
             }
 
             {
-                Rgb332 rgb = (Rgb332)Color.Blue;
-                Color color = (Color)rgb;
-                Assert.AreEqual(Color.Blue.R, color.R);
-                Assert.AreEqual(Color.Blue.G, color.G);
-                Assert.AreEqual(Color.Blue.B, color.B);
+                Color color0 = Color.Blue;
+                Rgb332 rgb = (Rgb332)color0;
+                Color color1 = (Color)rgb;
+                Assert.AreEqual(color0.R, color1.R);
+                Assert.AreEqual(color0.G, color1.G);
+                Assert.AreEqual(color0.B, color1.B);
+            }
+
+            {
+                Color color0 = Color.White;
+                Rgb332 rgb = (Rgb332)color0;
+                Color color1 = (Color)rgb;
+                Assert.AreEqual(color0.R, color1.R);
+                Assert.AreEqual(color0.G, color1.G);
+                Assert.AreEqual(color0.B, color1.B);
+            }
+
+            {
+                Color color0 = Color.Black;
+                Rgb332 rgb = (Rgb332)color0;
+                Color color1 = (Color)rgb;
+                Assert.AreEqual(color0.R, color1.R);
+                Assert.AreEqual(color0.G, color1.G);
+                Assert.AreEqual(color0.B, color1.B);
             }
         }
     }
