@@ -34,7 +34,7 @@ namespace MosaicArt.Core
         /// <summary>
         /// 圧縮した画像
         /// </summary>
-        public MonochromeImage4x4 MiniImage = new();
+        public Rgb332Image4x4 MiniImage = new();
         public ImageInfo()
         {
         }
@@ -78,11 +78,12 @@ namespace MosaicArt.Core
         /// </summary>
         public double Compare(ImageInfo other)
         {
-            // 1ピクセルの重みに注意（1ピクセル=1）
             double sum = 0;
             //sum += Distance(MiniImage, other.MiniImage);
-            sum += Utility.Distance(AverageRgb, other.AverageRgb);
-            sum += MonochromeImage4x4.PixelCount - MiniImage.MatchCount(other.MiniImage);// 全一致なら0となる
+            //sum += Utility.Distance(AverageHsv, other.AverageHsv);
+            //sum += Utility.Distance(AverageRgb, other.AverageRgb);
+            //sum += MonochromeImage4x4.PixelCount - MiniImage.MatchCount(other.MiniImage);// 全一致なら0となる
+            sum += MiniImage.Compare(other.MiniImage);
             return sum;
         }
         /// <summary>

@@ -20,6 +20,9 @@ namespace MosaicArt.MovieSlicer
                 return;
             }
             var path = args[0];
+            path = @"D:\Develop\Projects\MosaicArt\TestData\Resource\20220427 【#マリン出航3DLIVE】ゲストとワイワイ！Marine Set Sail!! Concert!!【ホロライブ 宝鐘マリン】.mp4";
+
+            Console.WriteLine($"{nameof(path)}={path}");
             int count;
             int width;
             int height;
@@ -28,16 +31,19 @@ namespace MosaicArt.MovieSlicer
                 Console.WriteLine($"args[1]がint型へ変換できません。");
                 return;
             }
+            Console.WriteLine($"{nameof(count)}={count}");
             if (int.TryParse(args[2], out width) == false)
             {
                 Console.WriteLine($"args[2]がint型へ変換できません。");
                 return;
             }
+            Console.WriteLine($"{nameof(width)}={width}");
             if (int.TryParse(args[3], out height) == false)
             {
                 Console.WriteLine($"args[3]がint型へ変換できません。");
                 return;
             }
+            Console.WriteLine($"{nameof(height)}={height}");
             if (count <= 0)
             {
                 Console.WriteLine($"{nameof(count)}が0以下です。");
