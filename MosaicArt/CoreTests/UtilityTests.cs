@@ -30,6 +30,9 @@ namespace MosaicArt.Core.Tests
             color0 = Color.Black;
             color1 = Color.White;
             Assert.AreEqual(441.672955930063709849498817084, Utility.Distance(color0, color1));
+            color0 = Color.FromArgb(0, 0, 0, 0);
+            color1 = Color.White;
+            Assert.AreEqual(510, Utility.Distance(color0, color1));
         }
         [TestMethod()]
         public void CountOneTest()
