@@ -59,6 +59,17 @@ namespace MosaicArt.Core
             return Color.Black;
         }
 
+        public Color GetPixel(int x, int y, Color zeroColor, Color oneColor)
+        {
+            var offset = (Width * y) + x;
+            var bit = (Bits >> offset) & 1;
+            if (bit == 1)
+            {
+                return oneColor;
+            }
+            return zeroColor;
+        }
+
         public override void SetPixel(int x, int y, Color color)
         {
             var luminance = color.GetLuminance();
@@ -84,6 +95,22 @@ namespace MosaicArt.Core
         public int MatchCount(MonochromeImage4x4 other)
         {
             return Utility.MatchCount(Bits, other.Bits);
+        }
+        /// <summary>
+        /// Bitmap に変換します。ピクセルの色を指定できます。
+        /// </summary>
+        public Bitmap ToBitmap(Color zeroColor, Color oneColor)
+        {
+            var bitmap = new Bitmap(Width, Height);
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    Color color = GetPixel(x, y, zeroColor, oneColor);
+                    bitmap.SetPixel(x, y, color);
+                }
+            }
+            return bitmap;
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
