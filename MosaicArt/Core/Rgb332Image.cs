@@ -29,7 +29,8 @@ namespace MosaicArt.Core
                 for (int x = 0; x < Width; x++)
                 {
                     var color = bitmap.GetPixel(x, y);
-                    Bytes.Add(color.GetLuminance());
+                    var rgb = (Rgb332)color;
+                    Bytes.Add(rgb);
                 }
             }
         }
