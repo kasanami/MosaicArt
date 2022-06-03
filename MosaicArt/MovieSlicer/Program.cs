@@ -20,8 +20,6 @@ namespace MosaicArt.MovieSlicer
                 return;
             }
             var path = args[0];
-            path = @"D:\Develop\Projects\MosaicArt\TestData\Resource\20220427 【#マリン出航3DLIVE】ゲストとワイワイ！Marine Set Sail!! Concert!!【ホロライブ 宝鐘マリン】.mp4";
-
             Console.WriteLine($"{nameof(path)}={path}");
             int count;
             int width;

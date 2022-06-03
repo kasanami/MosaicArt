@@ -3,6 +3,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using MessagePack;
 using MosaicArt.Core;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
 using static MosaicArt.Core.Utility;
 
 namespace MosaicArt.TestApp
@@ -13,12 +15,32 @@ namespace MosaicArt.TestApp
         [STAThread]
         static void Main(string[] args)
         {
-            int divisionsX = 40;
-            int divisionsY = 40;
+            // 分割数
+            int divisionsX = 100;
+            int divisionsY = 100;
+
+            const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
+            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\400x400.jpg";
+            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon1000x1000.jpg";
+            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter1000x1000.jpg";
+            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon1000x1000.jpg";
+
+            Console.WriteLine("素材作成");
+            {
+                var files = Directory.GetFiles(DirectoryPath, "*.mp4");
+                foreach (var file in files)
+                {
+                    var directory = Path.GetDirectoryName(file) + "/" + Path.GetFileNameWithoutExtension(file);
+                    if (Directory.Exists(directory))
+                    {
+                        continue;// すでにあるならスキップ
+                    }
+                    MovieSlicer(file, 100, 32, 18);
+                }
+            }
 
             Console.WriteLine("素材分析");
             ImagesInfo imagesInfo = new ImagesInfo();
-            const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
             var directories = Directory.GetDirectories(DirectoryPath);
             foreach (var d in directories)
             {
@@ -51,10 +73,9 @@ namespace MosaicArt.TestApp
                 return;
             }
             // 設計図
-            Dictionary<Point, ImageInfo?> bluePrint = new Dictionary<Point, ImageInfo?>();
+            Dictionary<System.Drawing.Point, ImageInfo?> bluePrint = new();
             int bluePrintWidth;
             int bluePrintHeight;
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\400x400.jpg";
             // targetの分析、resourceと比較
             Console.WriteLine("分析");
             try
@@ -73,7 +94,7 @@ namespace MosaicArt.TestApp
                         var imageInfo = new ImageInfo(clippedBitmap);
                         // 最も近い画像を選ぶ
                         var nearImageInfo = imagesInfo.GetNear(imageInfo);
-                        bluePrint.Add(new Point(x, y), nearImageInfo);
+                        bluePrint.Add(new System.Drawing.Point(x, y), nearImageInfo);
                     }
                 }
                 bluePrintWidth = width;
@@ -175,6 +196,41 @@ namespace MosaicArt.TestApp
                 }
             }
             return result;
+        }
+        /// <summary>
+        /// 動画をフレームごとに画像に保存
+        /// </summary>
+        /// <param name="path">動画ファイルのパス</param>
+        /// <param name="count">出力枚数</param>
+        /// <param name="width">出力サイズの幅</param>
+        /// <param name="height">出力サイズの高さ</param>
+        static void MovieSlicer(string path, int count, int width, int height)
+        {
+            Console.WriteLine($"{path}, {count}, {width}, {height}");
+            using (var capture = new VideoCapture(path))
+            {
+                var directory = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
+                if (Directory.Exists(directory) == false)
+                {
+                    Directory.CreateDirectory(directory);
+                }
+                var img = new Mat();
+                var frameCount = capture.FrameCount - 1;// 実際に使えるのは1フレーム少ない
+                if (count > frameCount)
+                {
+                    count = frameCount;
+                }
+                var interval = frameCount / count;
+                for (int i = 0; i < frameCount; i += interval)
+                {
+                    capture.PosFrames = i;
+                    capture.Read(img);
+                    var bitmap = BitmapConverter.ToBitmap(img);
+                    var resizeBitmap = new Bitmap(bitmap, width, height);
+                    resizeBitmap.Save($@"{directory}/{i}.png", ImageFormat.Png);
+                    Console.WriteLine($"PosFrames={i}");
+                }
+            }
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
