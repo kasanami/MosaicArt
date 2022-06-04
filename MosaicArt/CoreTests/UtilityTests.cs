@@ -69,5 +69,14 @@ namespace MosaicArt.Core.Tests
             Assert.AreEqual(3, Utility.MatchCount(0b1111_1111_1111_1111, 0b0000_0000_1000_1100));
             Assert.AreEqual(4, Utility.MatchCount(0b1111_1111_1111_1111, 0b0000_0000_1001_1100));
         }
+        [TestMethod()]
+        public void ShuffleTest()
+        {
+            List<int> list = new List<int>();
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            Utility.Shuffle(list);
+        }
     }
 }

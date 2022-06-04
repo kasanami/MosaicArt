@@ -21,9 +21,16 @@ namespace MosaicArt.TestApp
 
             const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\400x400.jpg";
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter1000x1000.jpg";
+            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter1000x1000.jpg";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon1000x1000.jpg";
+            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter2000x2000.jpg";
+            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter2000x2000ノイズ.jpg";
             Console.WriteLine($"{nameof(targetPath)}={targetPath}");
+
+            //{
+            //    var file = @"D:\Develop\Projects\MosaicArt\TestData\Resource\20200308 【３D】JKがｵﾊﾞ…お姉さんにダンスレッスン【ホロライブ 宝鐘マリン・夏色まつり】.mp4";
+            //    MovieSlicer(file, 100, 64, 36);
+            //}
 
             Console.WriteLine("素材作成");
             {
@@ -85,17 +92,32 @@ namespace MosaicArt.TestApp
                 var height = bitmap.Height;
                 var w = bitmap.Width / divisionsX;
                 var h = bitmap.Height / divisionsY;
+
+                List<System.Drawing.Point> points = new();
+
                 for (int y = 0; y < height; y += h)
                 {
                     for (int x = 0; x < width; x += w)
                     {
-                        var rect = new Rectangle(x, y, w, h);
-                        var clippedBitmap = bitmap.Clip(rect);
-                        var imageInfo = new ImageInfo(clippedBitmap);
-                        // 最も近い画像を選ぶ
-                        var nearImageInfo = imagesInfo.GetNear(imageInfo);
-                        bluePrint.Add(new System.Drawing.Point(x, y), nearImageInfo);
+                        points.Add(new System.Drawing.Point(x, y));
                     }
+                }
+                Shuffle(points);
+                foreach (var point in points)
+                {
+                    var x = point.X;
+                    var y = point.Y;
+                    Console.WriteLine($"{x}x{y}");
+                    var rect = new Rectangle(x, y, w, h);
+                    var clippedBitmap = bitmap.Clip(rect);
+                    var imageInfo = new ImageInfo(clippedBitmap);
+                    // 最も近い画像を選ぶ
+                    var nearImageInfo = imagesInfo.GetNear(imageInfo);
+                    if (nearImageInfo != null)
+                    {
+                        nearImageInfo.IsReserved = true;
+                    }
+                    bluePrint.Add(new System.Drawing.Point(x, y), nearImageInfo);
                 }
                 bluePrintWidth = width;
                 bluePrintHeight = height;
@@ -201,12 +223,12 @@ namespace MosaicArt.TestApp
         /// 動画をフレームごとに画像に保存
         /// </summary>
         /// <param name="path">動画ファイルのパス</param>
-        /// <param name="count">出力枚数</param>
+        /// <param name="interval">フレームの間隔</param>
         /// <param name="width">出力サイズの幅</param>
         /// <param name="height">出力サイズの高さ</param>
-        static void MovieSlicer(string path, int count, int width, int height)
+        static void MovieSlicer(string path, int interval, int width, int height)
         {
-            Console.WriteLine($"{path}, {count}, {width}, {height}");
+            Console.WriteLine($"{path}, {interval}, {width}, {height}");
             using (var capture = new VideoCapture(path))
             {
                 var directory = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
@@ -216,11 +238,13 @@ namespace MosaicArt.TestApp
                 }
                 var img = new Mat();
                 var frameCount = capture.FrameCount - 1;// 実際に使えるのは1フレーム少ない
-                if (count > frameCount)
+                // 1動画50枚未満にならないようにする。
+                var interval2 = frameCount / 20;
+                if (interval > interval2)
                 {
-                    count = frameCount;
+                    interval = interval2;
                 }
-                var interval = frameCount / count;
+
                 for (int i = 0; i < frameCount; i += interval)
                 {
                     capture.PosFrames = i;

@@ -50,7 +50,7 @@ namespace MosaicArt.Core
             File.WriteAllText(path + ".json", json, Encoding.UTF8);
 #endif
         }
-        public static ImagesInfo Load(string path)
+        public static new ImagesInfo Load(string path)
         {
             var bytes = File.ReadAllBytes(path);
             return MessagePackSerializer.Deserialize<ImagesInfo>(bytes);
@@ -62,6 +62,9 @@ namespace MosaicArt.Core
         {
             IEnumerable<ImageInfo> imageInfos = ImageInfos;
             int count;
+
+            // 予約済みは除外
+            imageInfos = imageInfos.Where(item => item.IsReserved == false);
 
             //var count = Math.Min(1000, imageInfos.Count());
             //imageInfos = imageInfos.OrderBy(item => item.PrimaryCompare(imageInfo)).Take(count);

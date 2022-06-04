@@ -240,5 +240,18 @@ namespace MosaicArt.Core
             return CountOne((ushort)~bits);
         }
         #endregion ビット操作
+
+        public static void Shuffle<T>(List<T> list)
+        {
+            T temp;
+            Random random = new Random();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var index = random.Next(list.Count);
+                temp = list[i];
+                list.RemoveAt(i);
+                list.Insert(index, temp);
+            }
+        }
     }
 }

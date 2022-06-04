@@ -41,6 +41,11 @@ namespace MosaicArt.Core
         /// 圧縮した画像
         /// </summary>
         public MiniImage4x4 MiniImage = new();
+        /// <summary>
+        /// 予約済み
+        /// </summary>
+        public bool IsReserved = false;
+
         public ImageInfo()
         {
         }
