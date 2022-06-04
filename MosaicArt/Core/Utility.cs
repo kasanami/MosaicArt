@@ -58,6 +58,45 @@ namespace MosaicArt.Core
         }
         #endregion Color
 
+        #region Image
+        /// <summary>
+        /// 色空間内での距離
+        /// </summary
+        public static double Distance(Bitmap image0, Bitmap image1)
+        {
+            double sum = 0;
+#pragma warning disable CA1416 // プラットフォームの互換性を検証
+            if (image0.Width != image1.Width || image0.Height != image1.Height)
+            {
+                image1 = image1.Resize(image0.Width, image0.Height);
+            }
+            for (int y = 0; y < image0.Height; y++)
+            {
+                for (int x = 0; x < image0.Width; x++)
+                {
+                    var color0 = image0.GetPixel(x, y);
+                    var color1 = image1.GetPixel(x, y);
+                    sum += Distance(color0, color1);
+                }
+            }
+#pragma warning restore CA1416 // プラットフォームの互換性を検証
+            return sum;
+        }
+        /// <summary>
+        /// 色空間内での距離
+        /// </summary
+        public static double Distance(MiniImage image0, MiniImage image1)
+        {
+            double sum = 0;
+            for (int i = 0; i < image0.Bytes.Count; i++)
+            {
+                var diff = image0.Bytes[i] - image1.Bytes[i];
+                sum += diff * diff;
+            }
+            return Math.Sqrt(sum);
+        }
+        #endregion Image
+
         #region ビット操作
         /// <summary>
         /// ビット数に対する最大値 (添字にビット数を入れる)

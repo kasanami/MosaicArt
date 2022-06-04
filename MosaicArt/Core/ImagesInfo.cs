@@ -60,7 +60,16 @@ namespace MosaicArt.Core
         /// </summary>
         public ImageInfo? GetNear(ImageInfo imageInfo)
         {
-            return ImageInfos.MinBy(item => item.Compare(imageInfo));
+            IEnumerable<ImageInfo> imageInfos = ImageInfos;
+            int count;
+
+            //var count = Math.Min(1000, imageInfos.Count());
+            //imageInfos = imageInfos.OrderBy(item => item.PrimaryCompare(imageInfo)).Take(count);
+
+            count = Math.Min(10, imageInfos.Count());
+            imageInfos = imageInfos.OrderBy(item => item.SecondaryCompare(imageInfo)).Take(count);
+
+            return imageInfos.MinBy(item => item.Compare(imageInfo));
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証

@@ -1,6 +1,7 @@
 ﻿using MessagePack;
 using System.Drawing;
 using System.Text;
+using static MosaicArt.Core.Utility;
 
 namespace MosaicArt.Core
 {
@@ -17,6 +18,11 @@ namespace MosaicArt.Core
         /// アプリケーション内で生成された画像の場合は空文字列;
         /// </summary>
         public string Path = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        [IgnoreMember]
+        public Bitmap? Bitmap = null;
         public int Width = 0;
         public int Height = 0;
         /// <summary>
@@ -41,6 +47,7 @@ namespace MosaicArt.Core
         public ImageInfo(Bitmap bitmap)
         {
             Path = string.Empty;
+            Bitmap = bitmap;
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
@@ -49,6 +56,7 @@ namespace MosaicArt.Core
         public ImageInfo(string path, Bitmap bitmap)
         {
             Path = path;
+            Bitmap = bitmap;
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
@@ -78,33 +86,39 @@ namespace MosaicArt.Core
         /// </summary>
         public double Compare(ImageInfo other)
         {
-            double sum = 0;
-
-            var averageRgb = Utility.Distance(AverageRgb, other.AverageRgb);
-            if (averageRgb > 1)
+            Bitmap? bitmap0 = null;
+            Bitmap? bitmap1 = null;
+            if (Bitmap != null)
+            {
+                bitmap0 = Bitmap;
+            }
+            else if (string.IsNullOrEmpty(Path) == false)
+            {
+                Bitmap = new(Path);
+                bitmap0 = Bitmap;
+            }
+            if (other.Bitmap != null)
+            {
+                bitmap1 = other.Bitmap;
+            }
+            else if (string.IsNullOrEmpty(other.Path) == false)
+            {
+                other.Bitmap = new(other.Path);
+                bitmap1 = other.Bitmap;
+            }
+            if (bitmap0 == null || bitmap1 == null)
             {
                 return double.PositiveInfinity;
             }
-
-            var miniImage= Distance(MiniImage, other.MiniImage);
-            sum += miniImage;
-            //sum += Utility.Distance(AverageHsv, other.AverageHsv);
-            //sum += MonochromeImage4x4.PixelCount - MiniImage.MatchCount(other.MiniImage);// 全一致なら0となる
-            //sum += MiniImage.Compare(other.MiniImage);
-            return sum;
+            return Distance(bitmap0, bitmap1);
         }
-        /// <summary>
-        /// 色空間内での距離
-        /// </summary
-        public static double Distance(MiniImage image0, MiniImage image1)
+        public double PrimaryCompare(ImageInfo other)
         {
-            double sum = 0;
-            for (int i = 0; i < image0.Bytes.Count; i++)
-            {
-                var diff = image0.Bytes[i] - image1.Bytes[i];
-                sum += diff * diff;
-            }
-            return Math.Sqrt(sum);
+            return Distance(AverageRgb, other.AverageRgb);
+        }
+        public double SecondaryCompare(ImageInfo other)
+        {
+            return Distance(MiniImage, other.MiniImage);
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証

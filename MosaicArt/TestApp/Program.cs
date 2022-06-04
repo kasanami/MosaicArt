@@ -21,9 +21,9 @@ namespace MosaicArt.TestApp
 
             const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\400x400.jpg";
+            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter1000x1000.jpg";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon1000x1000.jpg";
-            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter1000x1000.jpg";
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon1000x1000.jpg";
+            Console.WriteLine($"{nameof(targetPath)}={targetPath}");
 
             Console.WriteLine("素材作成");
             {
