@@ -50,11 +50,51 @@ namespace MosaicArt.Core
             File.WriteAllText(path + ".json", json, Encoding.UTF8);
 #endif
         }
+        /// <summary>
+        /// 画像ファイルが存在するか確認する
+        /// すべてあればtrue
+        /// </summary>
+        /// <returns></returns>
+        public bool ExistsFile()
+        {
+            foreach (var imageInfo in ImageInfos)
+            {
+                if (string.IsNullOrEmpty(imageInfo.Path) == false)
+                {
+                    if (File.Exists(imageInfo.Path) == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public void RemoveDuplicates()
+        {
+            if (ImageInfos.Count <= 1)
+            {
+                return;
+            }
+            for (int i = 0; i < ImageInfos.Count; i++)
+            {
+                for (int j = i + 1; j < ImageInfos.Count; j++)
+                {
+                    if (ImageInfos[i].MiniImage.Equals(ImageInfos[j].MiniImage))
+                    {
+                        ImageInfos.RemoveAt(j);
+                        j--;
+                    }
+                }
+            }
+        }
+
         public static new ImagesInfo Load(string path)
         {
             var bytes = File.ReadAllBytes(path);
             return MessagePackSerializer.Deserialize<ImagesInfo>(bytes);
         }
+
         /// <summary>
         /// 引数のImageInfoに最も近いImageInfoを返す。
         /// </summary>
@@ -69,7 +109,7 @@ namespace MosaicArt.Core
             //var count = Math.Min(1000, imageInfos.Count());
             //imageInfos = imageInfos.OrderBy(item => item.PrimaryCompare(imageInfo)).Take(count);
 
-            count = Math.Min(10, imageInfos.Count());
+            count = Math.Min(100, imageInfos.Count());
             imageInfos = imageInfos.OrderBy(item => item.SecondaryCompare(imageInfo)).Take(count);
 
             return imageInfos.MinBy(item => item.Compare(imageInfo));
