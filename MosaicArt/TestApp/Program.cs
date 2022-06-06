@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿#define ENABLE_PARALLELS
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using MessagePack;
@@ -23,8 +24,9 @@ namespace MosaicArt.TestApp
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\400x400.jpg";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter1000x1000.jpg";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon1000x1000.jpg";
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter2000x2000.jpg";
+            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter4000x4000.jpg";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter2000x2000ノイズ.jpg";
+            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon4000x4000.jpg";
             Console.WriteLine($"{nameof(targetPath)}={targetPath}");
 
             Console.WriteLine("素材作成");
@@ -109,23 +111,44 @@ namespace MosaicArt.TestApp
                 }
                 Shuffle(points);
                 Console.WriteLine($"{nameof(points.Count)}={points.Count}");
+#if ENABLE_PARALLELS
+                Parallel.For(0, points.Count, i =>
+                {
+                    var point = points[i];
+#else
                 int i = 0;
                 foreach (var point in points)
                 {
+#endif
                     var x = point.X;
                     var y = point.Y;
-                    Console.WriteLine($"{i}:{x}x{y}"); i++;
+                    Console.WriteLine($"{i}:{x}x{y}");
                     var rect = new Rectangle(x, y, w, h);
-                    var clippedBitmap = bitmap.Clip(rect);
+                    Bitmap clippedBitmap;
+                    lock (bitmap)
+                    {
+                        clippedBitmap = bitmap.Clip(rect);
+                    }
                     var imageInfo = new ImageInfo(clippedBitmap);
                     // 最も近い画像を選ぶ
                     var nearImageInfo = imagesInfo.GetNear(imageInfo);
                     if (nearImageInfo != null)
                     {
-                        nearImageInfo.IsReserved = true;
+                        lock (nearImageInfo)
+                        {
+                            nearImageInfo.IsReserved = true;
+                        }
                     }
-                    bluePrint.Add(new System.Drawing.Point(x, y), nearImageInfo);
+                    lock (bluePrint)
+                    {
+                        bluePrint.Add(new System.Drawing.Point(x, y), nearImageInfo);
+                    }
+#if ENABLE_PARALLELS
+                });
+#else
+                     i++;
                 }
+#endif
                 bluePrintWidth = width;
                 bluePrintHeight = height;
             }

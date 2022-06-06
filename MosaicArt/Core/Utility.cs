@@ -66,17 +66,23 @@ namespace MosaicArt.Core
         {
             double sum = 0;
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
-            if (image0.Width != image1.Width || image0.Height != image1.Height)
+            lock (image0)
             {
-                image1 = image1.Resize(image0.Width, image0.Height);
-            }
-            for (int y = 0; y < image0.Height; y++)
-            {
-                for (int x = 0; x < image0.Width; x++)
+                lock (image1)
                 {
-                    var color0 = image0.GetPixel(x, y);
-                    var color1 = image1.GetPixel(x, y);
-                    sum += Distance(color0, color1);
+                    if (image0.Width != image1.Width || image0.Height != image1.Height)
+                    {
+                        image1 = image1.Resize(image0.Width, image0.Height);
+                    }
+                    for (int y = 0; y < image0.Height; y++)
+                    {
+                        for (int x = 0; x < image0.Width; x++)
+                        {
+                            var color0 = image0.GetPixel(x, y);
+                            var color1 = image1.GetPixel(x, y);
+                            sum += Distance(color0, color1);
+                        }
+                    }
                 }
             }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
