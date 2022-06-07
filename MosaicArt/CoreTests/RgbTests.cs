@@ -46,5 +46,33 @@ namespace MosaicArt.Core.Tests
             rgb = new Rgb(0, 0, 0);
             Assert.AreEqual(Rgb.Black, rgb);
         }
+        [TestMethod()]
+        public void OperationsTest()
+        {
+            Rgb rgb0 = new Rgb(0, 0, 0);
+            Rgb rgb1 = new Rgb(0, 0, 0);
+            Assert.IsTrue(rgb0 == rgb1);
+            Assert.IsFalse(rgb0 != rgb1);
+
+            rgb0 = new Rgb(1, 0, 0);
+            rgb1 = new Rgb(1, 0, 0);
+            Assert.IsTrue(rgb0 == rgb1);
+            Assert.IsFalse(rgb0 != rgb1);
+
+            rgb0 = new Rgb(0, 0, 1);
+            rgb1 = new Rgb(0, 0, 1);
+            Assert.IsTrue(rgb0 == rgb1);
+            Assert.IsFalse(rgb0 != rgb1);
+
+            rgb0 = new Rgb(1, 0, 0);
+            rgb1 = new Rgb(0, 0, 1);
+            Assert.IsFalse(rgb0 == rgb1);
+            Assert.IsTrue(rgb0 != rgb1);
+
+            rgb0 = new Rgb(1, 1, 0);
+            rgb1 = new Rgb(0, 1, 1);
+            Assert.IsFalse(rgb0 == rgb1);
+            Assert.IsTrue(rgb0 != rgb1);
+        }
     }
 }

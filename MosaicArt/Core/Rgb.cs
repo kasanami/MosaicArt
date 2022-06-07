@@ -7,7 +7,7 @@ namespace MosaicArt.Core
     /// 色
     /// </summary>
     [MessagePackObject(true)]
-    public struct Rgb
+    public struct Rgb : IEquatable<Rgb>
     {
         #region 定数
         /// <summary>
@@ -48,6 +48,14 @@ namespace MosaicArt.Core
         }
 
         #region operator
+        public static bool operator ==(Rgb left, Rgb right)
+        {
+            return left.Equals(right);
+        }
+        public static bool operator !=(Rgb left, Rgb right)
+        {
+            return left.Equals(right) == false;
+        }
         public static Rgb operator +(Rgb left, Rgb right)
         {
             return new Rgb(left.R + right.R, left.G + right.G, left.B + right.B);
@@ -88,15 +96,10 @@ namespace MosaicArt.Core
         public override bool Equals(object? other)
         {
             if (other is Rgb == false)
+            {
                 return false;
-            var otherRgb = (Rgb)other;
-            if (this.R != otherRgb.R)
-                return false;
-            if (this.G != otherRgb.G)
-                return false;
-            if (this.B != otherRgb.B)
-                return false;
-            return true;
+            }
+            return Equals((Rgb)other);
         }
         /// <summary>
         /// ハッシュコードを生成
@@ -121,5 +124,16 @@ namespace MosaicArt.Core
             return $"{nameof(Rgb)}{{{R.ToString(format)}, {G.ToString(format)}, {B.ToString(format)}}}";
         }
         #endregion Object
+
+        public bool Equals(Rgb other)
+        {
+            if (this.R != other.R)
+                return false;
+            if (this.G != other.G)
+                return false;
+            if (this.B != other.B)
+                return false;
+            return true;
+        }
     }
 }
