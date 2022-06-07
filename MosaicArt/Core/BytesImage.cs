@@ -9,6 +9,17 @@ namespace MosaicArt.Core
         public override int Width { get; set; } = 0;
         public override int Height { get; set; } = 0;
         public List<byte> Bytes = new();
+        /// <summary>
+        /// 比較に使用する値。
+        /// 常に最新の値とは限らないので注意。
+        /// </summary>
+        [IgnoreMember]
+        public long BytesSum = 0;
+
+        public void UpdateBytesSum()
+        {
+            BytesSum = Bytes.Sum(item => (long)item);
+        }
 
         public override Color GetPixel(int x, int y)
         {
