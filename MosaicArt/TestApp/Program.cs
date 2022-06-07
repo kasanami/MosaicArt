@@ -21,22 +21,25 @@ namespace MosaicArt.TestApp
             // 分割数
             int divisionsX = 100;
             int divisionsY = 100;
+            const int MovieSliceCount = 300;
+            bool IsRemakeResource = false;// 素材を再作成するならtrue
+
+            var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 8 };
 
             const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\マリン出航！_3500x2000.png";
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.jpg";
+            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon4000x4000.jpg";
             Console.WriteLine($"{nameof(targetPath)}={targetPath}");
 
             Console.WriteLine("素材作成");
             {
-                bool isRemake = false;
                 var files = Directory.GetFiles(DirectoryPath, "*.mp4");
                 foreach (var file in files)
                 {
                     var directory = Path.GetDirectoryName(file) + "/" + Path.GetFileNameWithoutExtension(file);
-                    if (Directory.Exists(directory) == false || isRemake)
+                    if (Directory.Exists(directory) == false || IsRemakeResource)
                     {
-                        MovieSlicer(file, 200);
+                        MovieSlicer(file, MovieSliceCount);
                     }
                 }
             }
@@ -46,12 +49,11 @@ namespace MosaicArt.TestApp
             var directories = Directory.GetDirectories(DirectoryPath);
             foreach (var d in directories)
             {
-                bool isRemake = false;
                 bool newCreate = true;
                 // 既存のImagesInfoを確認
                 // 無いorVersionが古かったら作成する。
                 var path = d + ImagesInfo.PathExtension;
-                if (File.Exists(path) && isRemake == false)
+                if (File.Exists(path) && IsRemakeResource == false)
                 {
                     // ImageInfoがあればVersionを確認
                     var info = VersionInfo.Load(path);
@@ -81,6 +83,7 @@ namespace MosaicArt.TestApp
 
             Console.WriteLine("素材整理");
             {
+                // ほとんど同じ画像は除外
                 imagesInfo.RemoveDuplicates();
             }
 
@@ -89,7 +92,7 @@ namespace MosaicArt.TestApp
             int bluePrintWidth;
             int bluePrintHeight;
             // targetの分析、resourceと比較
-            Console.WriteLine("分析");
+            Console.WriteLine("分析・設計図作成");
             try
             {
                 Bitmap bitmap = new Bitmap(targetPath);
@@ -120,7 +123,7 @@ namespace MosaicArt.TestApp
                 Shuffle(points);
                 Console.WriteLine($"{nameof(points.Count)}={points.Count}");
 #if ENABLE_PARALLELS
-                Parallel.For(0, points.Count, i =>
+                Parallel.For(0, points.Count, parallelOptions, i =>
                 {
                     var point = points[i];
 #else
@@ -162,7 +165,7 @@ namespace MosaicArt.TestApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ConsoleWrite(ex);
                 return;
             }
             // モザイクアート生成
@@ -211,7 +214,7 @@ namespace MosaicArt.TestApp
                 bitmap.Save(destinationPath, ImageFormat.Png);
             }
             DateTime endTime = DateTime.Now;
-            Console.WriteLine($"完了 {(endTime - startTime)}");
+            Console.WriteLine($"完了 処理時間:{(endTime - startTime)}");
         }
 
         static void ImageSlicer(string imagePath, int divisionsX, int divisionsY)
@@ -265,33 +268,51 @@ namespace MosaicArt.TestApp
         /// </summary>
         /// <param name="path">動画ファイルのパス</param>
         /// <param name="interval">出力枚数</param>
-        static void MovieSlicer(string path, int count)
+        /// <returns>成功したらtrueを返す。</returns>
+        static bool MovieSlicer(string path, int count)
         {
             Console.WriteLine($"{path}, {count}");
-            using (var capture = new VideoCapture(path))
+            try
             {
-                var directory = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
-                if (Directory.Exists(directory) == false)
+                using (var capture = new VideoCapture(path))
                 {
-                    Directory.CreateDirectory(directory);
-                }
-                var img = new Mat();
-                var frameCount = capture.FrameCount - 1;// 実際に使えるのは1フレーム少ない
-                var interval = frameCount / count;
-                if (interval <= 0) { interval = 1; }
+                    var directory = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
+                    if (Directory.Exists(directory) == false)
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+                    var img = new Mat();
+                    var frameCount = capture.FrameCount - 1;// 実際に使えるのは1フレーム少ない
+                    var interval = frameCount / count;
+                    if (interval <= 0) { interval = 1; }
 
-                for (int i = 0; i < frameCount; i += interval)
-                {
-                    capture.PosFrames = i;
-                    capture.Read(img);
-                    var bitmap = BitmapConverter.ToBitmap(img);
-                    var width = bitmap.Width / 10;
-                    var height = bitmap.Height / 10;
-                    var resizeBitmap = new Bitmap(bitmap, width, height);
-                    resizeBitmap.Save($@"{directory}/{i}.png", ImageFormat.Png);
-                    Console.WriteLine($"PosFrames={i}");
+                    for (int i = 0; i < frameCount; i += interval)
+                    {
+                        capture.PosFrames = i;
+                        capture.Read(img);
+                        var bitmap = BitmapConverter.ToBitmap(img);
+
+                        var width = bitmap.Width / 10;
+                        var height = bitmap.Height / 10;
+                        var resizeBitmap = new Bitmap(bitmap, width, height);
+                        resizeBitmap.Save($@"{directory}/{i}.png", ImageFormat.Png);
+                        Console.WriteLine($"PosFrames={i}");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                ConsoleWrite(ex);
+                return false;
+            }
+            return true;
+        }
+
+        static void ConsoleWrite(Exception ex)
+        {
+            Console.WriteLine("ERROR!");
+            Console.WriteLine($"Message:{ex.Message}");
+            Console.WriteLine($"StackTrace:{ex.StackTrace}");
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
