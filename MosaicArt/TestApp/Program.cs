@@ -16,17 +16,15 @@ namespace MosaicArt.TestApp
         [STAThread]
         static void Main(string[] args)
         {
+            DateTime startTime = DateTime.Now;
+            Console.WriteLine($"開始 {startTime}");
             // 分割数
             int divisionsX = 100;
             int divisionsY = 100;
 
             const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
-            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\400x400.jpg";
-            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter1000x1000.jpg";
-            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon1000x1000.jpg";
-            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter4000x4000.jpg";
-            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter2000x2000ノイズ.jpg";
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon4000x4000.jpg";
+            //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\マリン出航！_3500x2000.png";
+            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.jpg";
             Console.WriteLine($"{nameof(targetPath)}={targetPath}");
 
             Console.WriteLine("素材作成");
@@ -97,8 +95,18 @@ namespace MosaicArt.TestApp
                 Bitmap bitmap = new Bitmap(targetPath);
                 var width = bitmap.Width;
                 var height = bitmap.Height;
-                var w = bitmap.Width / divisionsX;
-                var h = bitmap.Height / divisionsY;
+                var w = width / divisionsX;
+                var h = height / divisionsY;
+                if (width % divisionsX != 0)
+                {
+                    Console.WriteLine($"{nameof(width)}が{divisionsX}の倍数ではありません。");
+                    return;
+                }
+                if (height % divisionsY != 0)
+                {
+                    Console.WriteLine($"{nameof(height)}が{divisionsY}の倍数ではありません。");
+                    return;
+                }
 
                 List<System.Drawing.Point> points = new();
 
@@ -198,9 +206,12 @@ namespace MosaicArt.TestApp
                 destinationPath += "/";
                 destinationPath += Path.GetFileNameWithoutExtension(targetPath);
                 destinationPath += "_MosaicArt.png";
+                destinationPath += DateTime.Now.ToString("(yyyyMMdd_HHmmss)");
+                destinationPath += ".png";
                 bitmap.Save(destinationPath, ImageFormat.Png);
             }
-            Console.WriteLine("完了");
+            DateTime endTime = DateTime.Now;
+            Console.WriteLine($"完了 {(endTime - startTime)}");
         }
 
         static void ImageSlicer(string imagePath, int divisionsX, int divisionsY)
