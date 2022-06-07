@@ -69,17 +69,29 @@ namespace MosaicArt.Core
             }
             return true;
         }
-
+        /// <summary>
+        /// 重複を削除する
+        /// （ほぼ同じ画像をリストから削除する）
+        /// </summary>
         public void RemoveDuplicates()
         {
             if (ImageInfos.Count <= 1)
             {
                 return;
             }
+            Parallel.ForEach(ImageInfos, item =>
+            {
+                item.MiniImage.UpdateBytesSum();
+            });
             for (int i = 0; i < ImageInfos.Count; i++)
             {
                 for (int j = i + 1; j < ImageInfos.Count; j++)
                 {
+                    if (ImageInfos[i].MiniImage.BytesSum != ImageInfos[j].MiniImage.BytesSum)
+                    {
+                        continue;
+                    }
+                    // NOTE:MiniImageが同じでもAverageRgbが同じとは限らない
                     if (ImageInfos[i].MiniImage.Equals(ImageInfos[j].MiniImage))
                     {
                         ImageInfos.RemoveAt(j);
