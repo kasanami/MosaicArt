@@ -37,7 +37,7 @@ namespace MosaicArt.Images
         public override Color GetPixel(int x, int y)
         {
             int offset = GetPixelOffset(x, y, PixelSize);
-            var hue = Bytes[offset] / 360f;
+            var hue = Bytes[offset] / 255f;
             var rgb = Hsv.ToRgb(hue, 1, 1);
             return (Color)rgb;
         }
@@ -48,9 +48,15 @@ namespace MosaicArt.Images
         }
         public static byte ToHue(Color color)
         {
+#if false
+            Rgb rgb = (Rgb)color;
+            Hsv hsv = (Hsv)rgb;
+            return (byte)Math.Round(hsv.H * 255);
+#else
             // GetHue()は0～360なので0～1.0に変換
             var rate = color.GetHue() / 360;
             return (byte)Math.Round(rate * 255);
+#endif
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
