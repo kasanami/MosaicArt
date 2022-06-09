@@ -1,26 +1,29 @@
 ﻿using MessagePack;
 using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Images
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     /// <summary>
     /// 圧縮した画像
     /// </summary>
     [MessagePackObject(true)]
-    public class MiniImage : BytesImage
+    public class MiniImage4x4 : MiniImage
     {
+        const int _Width = 4;
+        const int _Height = 4;
+        public override int Width { get; set; } = _Width;
+        public override int Height { get; set; } = _Height;
         /// <summary>
         /// 1ピクセル3バイト
         /// </summary>
         const int PixelSize = 3;
-        public MiniImage()
+        public MiniImage4x4()
         {
         }
-        public MiniImage(Bitmap bitmap)
+        public MiniImage4x4(Bitmap bitmap)
         {
-            Width = bitmap.Width;
-            Height = bitmap.Height;
+            bitmap = bitmap.Resize(Width, Height);
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
@@ -31,9 +34,6 @@ namespace MosaicArt.Core
                     Bytes.Add(color.B);
                 }
             }
-        }
-        public MiniImage(Bitmap bitmap, int width, int height) : this(bitmap.Resize(width, height))
-        {
         }
         public override Color GetPixel(int x, int y)
         {

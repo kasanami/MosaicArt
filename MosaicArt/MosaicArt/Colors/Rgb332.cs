@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Colors
 {
     /// <summary>
     /// 8ビットのRGB情報（各値が赤3ビット、緑3ビット、青2ビット）

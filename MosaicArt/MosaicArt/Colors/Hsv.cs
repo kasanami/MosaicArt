@@ -2,7 +2,7 @@
 using System;
 using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Colors
 {
     /// <summary>
     /// HSVの色を表現

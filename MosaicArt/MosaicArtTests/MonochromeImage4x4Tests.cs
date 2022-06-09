@@ -1,12 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MosaicArt.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MosaicArt.Core.Tests
+namespace MosaicArt.Images.Tests
 {
     [TestClass()]
     public class MonochromeImage4x4Tests

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt
 {
     /// <summary>
     /// Colorの拡張関数

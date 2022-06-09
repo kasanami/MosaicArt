@@ -1,6 +1,8 @@
-﻿using System.Drawing;
+﻿using MosaicArt.Colors;
+using MosaicArt.Images;
+using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt
 {
     public static class Utility
     {

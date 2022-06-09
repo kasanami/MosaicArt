@@ -1,7 +1,8 @@
-﻿using MosaicArt.Core;
+﻿using MosaicArt.Colors;
+using MosaicArt.Images;
 using System.Drawing;
 using System.Drawing.Imaging;
-using static MosaicArt.Core.Utility;
+using static MosaicArt.Utility;
 
 namespace MosaicArt.DummyMaker
 {
@@ -67,7 +68,7 @@ namespace MosaicArt.DummyMaker
                 //image.Bits = (ushort)i;
                 image.Bits = imagePatterns[i];
                 var directory2 = directory + $"/{image.Bits.ToString("X4")}";
-                if(Directory.Exists(directory2))
+                if (Directory.Exists(directory2))
                 {
                     continue;// すでにあるならスキップ
                 }

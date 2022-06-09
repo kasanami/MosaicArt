@@ -1,7 +1,7 @@
 ﻿using MessagePack;
 using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Images
 {
     [MessagePackObject(true)]
     public class BytesImage : AbstractImage, IEquatable<BytesImage>

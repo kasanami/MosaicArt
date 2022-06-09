@@ -1,6 +1,6 @@
 ﻿using MessagePack;
 
-namespace MosaicArt.Core
+namespace MosaicArt
 {
     [MessagePackObject(true)]
     public class VersionInfo

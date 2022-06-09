@@ -1,13 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MosaicArt.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 
-namespace MosaicArt.Core.Tests
+namespace MosaicArt.Tests
 {
     [TestClass()]
     public class UtilityTests

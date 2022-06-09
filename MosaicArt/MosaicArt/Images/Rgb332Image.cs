@@ -1,20 +1,27 @@
 ﻿using MessagePack;
+using MosaicArt.Colors;
 using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Images
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     /// <summary>
-    /// 輝度画像
+    /// ピクセルの色をRgb332でもつ画像
     /// </summary>
     [MessagePackObject(true)]
-    public class LuminanceImage : BytesImage
+    public class Rgb332Image : BytesImage
     {
+        public override int Width { get; set; } = 0;
+        public override int Height { get; set; } = 0;
+
         /// <summary>
         /// 1ピクセル1バイト
         /// </summary>
-        const int PixelSize = 1;
-        public LuminanceImage(Bitmap bitmap)
+        public const int PixelSize = 1;
+        public Rgb332Image()
+        {
+        }
+        public Rgb332Image(Bitmap bitmap)
         {
             Width = bitmap.Width;
             Height = bitmap.Height;
@@ -23,23 +30,25 @@ namespace MosaicArt.Core
                 for (int x = 0; x < Width; x++)
                 {
                     var color = bitmap.GetPixel(x, y);
-                    Bytes.Add(color.GetLuminance());
+                    var rgb = (Rgb332)color;
+                    Bytes.Add(rgb);
                 }
             }
         }
-        public LuminanceImage(Bitmap bitmap, int width, int height) : this(bitmap.Resize(width, height))
+        public Rgb332Image(Bitmap bitmap, int width, int height) : this(bitmap.Resize(width, height))
         {
         }
         public override Color GetPixel(int x, int y)
         {
             int offset = ((y * Width) + x);
-            var l = Bytes[offset];
-            return Color.FromArgb(l, l, l);
+            Rgb332 rgb = Bytes[offset];
+            return rgb;
         }
         public override void SetPixel(int x, int y, Color color)
         {
             int offset = ((y * Width) + x);
-            Bytes[offset] = color.GetLuminance();
+            Rgb332 rgb = (Rgb332)color;
+            Bytes[offset] = rgb.Bits;
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     public static class BitmapExtensions

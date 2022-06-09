@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Text;
 
-namespace MosaicArt.Core
+namespace MosaicArt
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     /// <summary>

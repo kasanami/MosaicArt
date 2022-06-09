@@ -1,7 +1,7 @@
 ﻿using MessagePack;
 using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Colors
 {
     /// <summary>
     /// 色

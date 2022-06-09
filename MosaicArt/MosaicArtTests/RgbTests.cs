@@ -1,13 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MosaicArt.Core;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MosaicArt.Core.Tests
+namespace MosaicArt.Colors.Tests
 {
     [TestClass()]
     public class RgbTests

@@ -1,9 +1,11 @@
 ﻿using MessagePack;
+using MosaicArt.Colors;
+using MosaicArt.Images;
 using System.Drawing;
 using System.Text;
-using static MosaicArt.Core.Utility;
+using static MosaicArt.Utility;
 
-namespace MosaicArt.Core
+namespace MosaicArt
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     /// <summary>

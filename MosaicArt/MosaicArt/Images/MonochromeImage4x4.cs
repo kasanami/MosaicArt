@@ -1,7 +1,7 @@
 ﻿using MessagePack;
 using System.Drawing;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Images
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     /// <summary>

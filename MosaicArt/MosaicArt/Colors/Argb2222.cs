@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace MosaicArt.Core
+namespace MosaicArt.Colors
 {
     /// <summary>
     /// 8ビットのARGB情報（各値が2ビットとなる）
