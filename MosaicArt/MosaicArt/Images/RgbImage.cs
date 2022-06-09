@@ -8,22 +8,19 @@ namespace MosaicArt.Images
     /// 圧縮した画像
     /// </summary>
     [MessagePackObject(true)]
-    public class MiniImage4x4 : MiniImage
+    public class RgbImage : BytesImage
     {
-        const int _Width = 4;
-        const int _Height = 4;
-        public override int Width { get; set; } = _Width;
-        public override int Height { get; set; } = _Height;
         /// <summary>
         /// 1ピクセル3バイト
         /// </summary>
         const int PixelSize = 3;
-        public MiniImage4x4()
+        public RgbImage()
         {
         }
-        public MiniImage4x4(Bitmap bitmap)
+        public RgbImage(Bitmap bitmap)
         {
-            bitmap = bitmap.Resize(Width, Height);
+            Width = bitmap.Width;
+            Height = bitmap.Height;
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
@@ -34,6 +31,9 @@ namespace MosaicArt.Images
                     Bytes.Add(color.B);
                 }
             }
+        }
+        public RgbImage(Bitmap bitmap, int width, int height) : this(bitmap.Resize(width, height))
+        {
         }
         public override Color GetPixel(int x, int y)
         {

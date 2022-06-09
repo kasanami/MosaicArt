@@ -42,7 +42,7 @@ namespace MosaicArt
         /// <summary>
         /// 圧縮した画像
         /// </summary>
-        public MiniImage4x4 MiniImage = new();
+        public RgbImage4x4 MiniImage = new();
         /// <summary>
         /// 予約済み
         /// </summary>
