@@ -65,5 +65,16 @@ namespace MosaicArt.Core
         {
             return Bytes.GetHashCode();
         }
+        /// <summary>
+        /// ピクセルのバイト配列の位置を取得
+        /// </summary>
+        /// <param name="x">X軸上の位置</param>
+        /// <param name="y">Y軸上の位置</param>
+        /// <param name="pixelSize">1ピクセルのバイトサイズ</param>
+        /// <returns></returns>
+        public int GetPixelOffset(int x, int y, int pixelSize)
+        {
+            return ((y * Width) + x) * pixelSize;
+        }
     }
 }

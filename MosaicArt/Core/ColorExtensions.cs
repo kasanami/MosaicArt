@@ -10,8 +10,6 @@ namespace MosaicArt.Core
         /// <summary>
         /// 輝度(0～255の値)
         /// </summary>
-        /// <param name="color"></param>
-        /// <returns></returns>
         public static byte GetLuminance(this Color color)
         {
             return (byte)Math.Round(color.R * 0.298912 + color.G * 0.586611 + color.B * 0.114478);
