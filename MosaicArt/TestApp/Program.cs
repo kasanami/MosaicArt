@@ -3,10 +3,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using MessagePack;
-using MosaicArt.Core;
+using MosaicArt.Images;
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
-using static MosaicArt.Core.Utility;
+using static MosaicArt.Utility;
 
 namespace MosaicArt.TestApp
 {
@@ -30,6 +30,18 @@ namespace MosaicArt.TestApp
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\マリン出航！_3500x2000.png";
             var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter4000x4000.jpg";
             Console.WriteLine($"{nameof(targetPath)}={targetPath}");
+
+#if false
+            {
+                Bitmap bitmap = new Bitmap(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.jpg");
+                BrightnessImage brightnessImage = new(bitmap);
+                brightnessImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.brightness.png", ImageFormat.Png);
+                HueImage hueImage = new(bitmap);
+                hueImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.hue.png", ImageFormat.Png);
+                RgbImage rgbImage = new(bitmap);
+                rgbImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.rgb.png", ImageFormat.Png);
+            }
+#endif
 
             Console.WriteLine("素材作成");
             {

@@ -5,7 +5,7 @@ namespace MosaicArt.Images
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
     /// <summary>
-    /// 圧縮した画像
+    /// RGB画像
     /// </summary>
     [MessagePackObject(true)]
     public class RgbImage : BytesImage
