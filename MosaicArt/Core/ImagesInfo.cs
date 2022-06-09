@@ -121,7 +121,7 @@ namespace MosaicArt.Core
             //var count = Math.Min(1000, imageInfos.Count());
             //imageInfos = imageInfos.OrderBy(item => item.PrimaryCompare(imageInfo)).Take(count);
 
-            count = Math.Min(100, imageInfos.Count());
+            count = Math.Min(10, imageInfos.Count());
             imageInfos = imageInfos.OrderBy(item => item.SecondaryCompare(imageInfo)).Take(count);
 
             return imageInfos.MinBy(item => item.Compare(imageInfo));

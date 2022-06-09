@@ -123,7 +123,7 @@ namespace MosaicArt.Core
         }
         public double SecondaryCompare(ImageInfo other)
         {
-            return Distance(MiniImage, other.MiniImage);
+            return SquaredDistance(MiniImage, other.MiniImage);
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証

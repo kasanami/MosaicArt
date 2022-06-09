@@ -28,7 +28,7 @@ namespace MosaicArt.TestApp
 
             const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\マリン出航！_3500x2000.png";
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon4000x4000.jpg";
+            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter4000x4000.jpg";
             Console.WriteLine($"{nameof(targetPath)}={targetPath}");
 
             Console.WriteLine("素材作成");
@@ -81,11 +81,13 @@ namespace MosaicArt.TestApp
                 return;
             }
 
+#if false// 品質下がるのでOFF
             Console.WriteLine("素材整理");
             {
                 // ほとんど同じ画像は除外
                 imagesInfo.RemoveDuplicates();
             }
+#endif
 
             // 設計図
             Dictionary<System.Drawing.Point, ImageInfo?> bluePrint = new();
@@ -112,15 +114,17 @@ namespace MosaicArt.TestApp
                 }
 
                 List<System.Drawing.Point> points = new();
-
-                for (int y = 0; y < height; y += h)
                 {
-                    for (int x = 0; x < width; x += w)
+                    for (int y = 0; y < height; y += h)
                     {
-                        points.Add(new System.Drawing.Point(x, y));
+                        for (int x = 0; x < width; x += w)
+                        {
+                            points.Add(new System.Drawing.Point(x, y));
+                        }
                     }
+                    Random random = new Random(123456789);
+                    Shuffle(points, random);
                 }
-                Shuffle(points);
                 Console.WriteLine($"{nameof(points.Count)}={points.Count}");
 #if ENABLE_PARALLELS
                 Parallel.For(0, points.Count, parallelOptions, i =>

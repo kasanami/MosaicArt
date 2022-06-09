@@ -93,13 +93,21 @@ namespace MosaicArt.Core
         /// </summary
         public static double Distance(MiniImage image0, MiniImage image1)
         {
+            double squaredDistance = SquaredDistance(image0, image1);
+            return Math.Sqrt(squaredDistance);
+        }
+        /// <summary>
+        /// 色空間内での距離
+        /// </summary
+        public static double SquaredDistance(MiniImage image0, MiniImage image1)
+        {
             double sum = 0;
             for (int i = 0; i < image0.Bytes.Count; i++)
             {
                 var diff = image0.Bytes[i] - image1.Bytes[i];
                 sum += diff * diff;
             }
-            return Math.Sqrt(sum);
+            return sum;
         }
         #endregion Image
 
@@ -246,11 +254,9 @@ namespace MosaicArt.Core
             return CountOne((ushort)~bits);
         }
         #endregion ビット操作
-
-        public static void Shuffle<T>(List<T> list)
+        public static void Shuffle<T>(List<T> list, Random random)
         {
             T temp;
-            Random random = new Random();
             for (int i = 0; i < list.Count; i++)
             {
                 var index = random.Next(list.Count);
@@ -258,6 +264,12 @@ namespace MosaicArt.Core
                 list.RemoveAt(i);
                 list.Insert(index, temp);
             }
+        }
+
+        public static void Shuffle<T>(List<T> list)
+        {
+            Random random = new Random();
+            Shuffle(list, random);
         }
     }
 }
