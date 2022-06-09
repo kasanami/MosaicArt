@@ -2,6 +2,7 @@
 using MosaicArt.Core;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,6 +74,38 @@ namespace MosaicArt.Core.Tests
             rgb1 = new Rgb(0, 1, 1);
             Assert.IsFalse(rgb0 == rgb1);
             Assert.IsTrue(rgb0 != rgb1);
+
+            {
+                rgb0 = new Rgb(0, 0, 0);
+                Color color = (Color)rgb0;
+                Assert.AreEqual(0, color.R);
+                Assert.AreEqual(0, color.G);
+                Assert.AreEqual(0, color.B);
+            }
+
+            {
+                rgb0 = new Rgb(0.001f, 0.001f, 0.001f);
+                Color color = (Color)rgb0;
+                Assert.AreEqual(0, color.R);
+                Assert.AreEqual(0, color.G);
+                Assert.AreEqual(0, color.B);
+            }
+
+            {
+                rgb0 = new Rgb(1, 1, 1);
+                Color color = (Color)rgb0;
+                Assert.AreEqual(255, color.R);
+                Assert.AreEqual(255, color.G);
+                Assert.AreEqual(255, color.B);
+            }
+
+            {
+                rgb0 = new Rgb(0.999f, 0.999f, 0.999f);
+                Color color = (Color)rgb0;
+                Assert.AreEqual(255, color.R);
+                Assert.AreEqual(255, color.G);
+                Assert.AreEqual(255, color.B);
+            }
         }
     }
 }

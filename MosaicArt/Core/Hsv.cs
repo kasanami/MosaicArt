@@ -119,14 +119,23 @@ namespace MosaicArt.Core
         /// </summary>
         public static Rgb ToRgb(Hsv hsv)
         {
-            float v = hsv.V;
-            float s = hsv.S;
+            return ToRgb(hsv.H, hsv.S, hsv.V);
+        }
+        /// <summary>
+        /// 色相をRGBに変換
+        /// </summary>
+        /// <param name="h">色相(0.0～1.0)</param>
+        /// <param name="s">彩度(0.0～1.0)</param>
+        /// <param name="v">明度(0.0～1.0)</param>
+        /// <returns>RGB</returns>
+        public static Rgb ToRgb(float h, float s, float v)
+        {
             float r = v;
             float g = v;
             float b = v;
             if (s > 0)
             {
-                float h = hsv.H * 6;
+                h = h * 6;
                 int i = (int)h;
                 float f = h - (float)i;
                 switch (i)

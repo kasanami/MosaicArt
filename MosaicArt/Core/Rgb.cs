@@ -90,6 +90,17 @@ namespace MosaicArt.Core
         {
             return Hsv.ToRgb(hsv);
         }
+
+        public static explicit operator Color(Rgb rgb)
+        {
+            int r = (int)Math.Round(rgb.R * 255);
+            int g = (int)Math.Round(rgb.G * 255);
+            var b = (int)Math.Round(rgb.B * 255);
+            r = Math.Clamp(r, 0, 255);
+            g = Math.Clamp(g, 0, 255);
+            b = Math.Clamp(b, 0, 255);
+            return Color.FromArgb(r, g, b);
+        }
         #endregion operator
 
         #region Object
