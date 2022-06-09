@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieSlicer", "MovieSlicer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageAnalyzer", "ImageAnalyzer\ImageAnalyzer.csproj", "{615BEFE3-3BF3-4835-93B3-AC494DBB2849}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{5F5A3AA1-A36D-4459-B36D-D44B851C9530}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MosaicArt", "MosaicArt\MosaicArt.csproj", "{5F5A3AA1-A36D-4459-B36D-D44B851C9530}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreTests", "CoreTests\CoreTests.csproj", "{B9839C10-8510-4672-92AC-00F9623369CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MosaicArtTests", "MosaicArtTests\MosaicArtTests.csproj", "{B9839C10-8510-4672-92AC-00F9623369CD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{CEB7029D-44A1-4882-A0E3-BE69983358DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyMaker", "DummyMaker\DummyMaker.csproj", "{4561863B-EC08-4788-9C00-25E43B1170D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DummyMaker", "DummyMaker\DummyMaker.csproj", "{4561863B-EC08-4788-9C00-25E43B1170D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
