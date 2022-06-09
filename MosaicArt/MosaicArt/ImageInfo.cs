@@ -1,4 +1,5 @@
-﻿using MessagePack;
+﻿//#define ENABLE_SUM_COLOR
+using MessagePack;
 using MosaicArt.Colors;
 using MosaicArt.Images;
 using System.Drawing;
@@ -20,13 +21,9 @@ namespace MosaicArt
         /// アプリケーション内で生成された画像の場合は空文字列;
         /// </summary>
         public string Path = string.Empty;
-        /// <summary>
-        /// 
-        /// </summary>
-        [IgnoreMember]
-        public Bitmap? Bitmap = null;
         public int Width = 0;
         public int Height = 0;
+#if ENABLE_SUM_COLOR
         /// <summary>
         /// 画像全体の合計色
         /// </summary>
@@ -39,13 +36,24 @@ namespace MosaicArt
         /// 画像全体の平均色
         /// </summary>
         public Hsv AverageHsv = new();
+#endif
+        /// <summary>
+        /// 明度画像
+        /// </summary>
+        public BrightnessImage4x4 BrightnessImage = new();
         /// <summary>
         /// 圧縮した画像
         /// </summary>
         public RgbImage4x4 MiniImage = new();
         /// <summary>
+        /// 元画像の一時保存用
+        /// </summary>
+        [IgnoreMember]
+        public Bitmap? Bitmap = null;
+        /// <summary>
         /// 予約済み
         /// </summary>
+        [IgnoreMember]
         public bool IsReserved = false;
 
         public ImageInfo()
@@ -58,6 +66,7 @@ namespace MosaicArt
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
+            BrightnessImage = new(bitmap);
             MiniImage = new(bitmap);
         }
         public ImageInfo(string path, Bitmap bitmap)
@@ -67,10 +76,12 @@ namespace MosaicArt
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
+            BrightnessImage = new(bitmap);
             MiniImage = new(bitmap);
         }
         private void Analyze(Bitmap bitmap)
         {
+#if ENABLE_SUM_COLOR
             SumRgb = Rgb.Zero;
             for (int y = 0; y < Height; y++)
             {
@@ -86,6 +97,7 @@ namespace MosaicArt
                 AverageRgb = SumRgb / area;
             }
             AverageHsv = (Hsv)AverageRgb;
+#endif
         }
         /// <summary>
         /// 比較し結果を実数で返す。
@@ -117,11 +129,15 @@ namespace MosaicArt
             {
                 return double.PositiveInfinity;
             }
-            return Distance(bitmap0, bitmap1);
+            return SquaredDistance(bitmap0, bitmap1);
         }
         public double PrimaryCompare(ImageInfo other)
         {
+#if ENABLE_SUM_COLOR
             return Distance(AverageRgb, other.AverageRgb);
+#else
+            return 0;
+#endif
         }
         public double SecondaryCompare(ImageInfo other)
         {

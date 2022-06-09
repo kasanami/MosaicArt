@@ -22,6 +22,19 @@ namespace MosaicArt
             return Math.Sqrt(r * r + g * g + b * b + a * a);
         }
         /// <summary>
+        /// 色空間内での距離の2乗
+        /// ※Color の各値の範囲は 0～255 なので注意
+        /// </summary
+        /// <returns>0～260100の値</returns>
+        public static int SquaredDistance(Color color0, Color color1)
+        {
+            var r = color0.R - color1.R;
+            var g = color0.G - color1.G;
+            var b = color0.B - color1.B;
+            var a = color0.A - color1.A;
+            return r * r + g * g + b * b + a * a;
+        }
+        /// <summary>
         /// 色空間内での距離
         /// </summary
         public static double Distance(Rgb color0, Rgb color1)
@@ -62,9 +75,9 @@ namespace MosaicArt
 
         #region Image
         /// <summary>
-        /// 色空間内での距離
+        /// 色空間内での距離の2乗
         /// </summary
-        public static double Distance(Bitmap image0, Bitmap image1)
+        public static double SquaredDistance(Bitmap image0, Bitmap image1)
         {
             double sum = 0;
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
@@ -82,7 +95,7 @@ namespace MosaicArt
                         {
                             var color0 = image0.GetPixel(x, y);
                             var color1 = image1.GetPixel(x, y);
-                            sum += Distance(color0, color1);
+                            sum += SquaredDistance(color0, color1);
                         }
                     }
                 }
