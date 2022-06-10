@@ -38,10 +38,6 @@ namespace MosaicArt
         public Hsv AverageHsv = new();
 #endif
         /// <summary>
-        /// 明度画像
-        /// </summary>
-        public BrightnessImage4x4 BrightnessImage = new();
-        /// <summary>
         /// 圧縮した画像
         /// </summary>
         public RgbImage4x4 MiniImage = new();
@@ -66,7 +62,6 @@ namespace MosaicArt
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
-            BrightnessImage = new(bitmap);
             MiniImage = new(bitmap);
         }
         public ImageInfo(string path, Bitmap bitmap)
@@ -76,7 +71,6 @@ namespace MosaicArt
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
-            BrightnessImage = new(bitmap);
             MiniImage = new(bitmap);
         }
         private void Analyze(Bitmap bitmap)
@@ -131,15 +125,10 @@ namespace MosaicArt
             }
             return SquaredDistance(bitmap0, bitmap1);
         }
-        public double PrimaryCompare(ImageInfo other)
-        {
-#if ENABLE_SUM_COLOR
-            return Distance(AverageRgb, other.AverageRgb);
-#else
-            return 0;
-#endif
-        }
-        public double SecondaryCompare(ImageInfo other)
+        /// <summary>
+        /// 速い比較。そのかわりに厳密ではない。
+        /// </summary>
+        public double FastCompare(ImageInfo other)
         {
             return SquaredDistance(MiniImage, other.MiniImage);
         }

@@ -117,13 +117,10 @@ namespace MosaicArt
 
             // 予約済みは除外
             imageInfos = imageInfos.Where(item => item.IsReserved == false);
-
-            //var count = Math.Min(1000, imageInfos.Count());
-            //imageInfos = imageInfos.OrderBy(item => item.PrimaryCompare(imageInfo)).Take(count);
-
+            // 高速比較である程度絞り込む
             count = Math.Min(10, imageInfos.Count());
-            imageInfos = imageInfos.OrderBy(item => item.SecondaryCompare(imageInfo)).Take(count);
-
+            imageInfos = imageInfos.OrderBy(item => item.FastCompare(imageInfo)).Take(count);
+            // 厳密に選ぶ
             return imageInfos.MinBy(item => item.Compare(imageInfo));
         }
     }

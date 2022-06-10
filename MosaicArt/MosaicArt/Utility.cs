@@ -106,7 +106,7 @@ namespace MosaicArt
         /// <summary>
         /// 色空間内での距離
         /// </summary
-        public static double Distance(RgbImage image0, RgbImage image1)
+        public static double Distance(BytesImage image0, BytesImage image1)
         {
             double squaredDistance = SquaredDistance(image0, image1);
             return Math.Sqrt(squaredDistance);
@@ -114,7 +114,7 @@ namespace MosaicArt
         /// <summary>
         /// 色空間内での距離
         /// </summary
-        public static double SquaredDistance(RgbImage image0, RgbImage image1)
+        public static double SquaredDistance(BytesImage image0, BytesImage image1)
         {
             double sum = 0;
             for (int i = 0; i < image0.Bytes.Count; i++)
