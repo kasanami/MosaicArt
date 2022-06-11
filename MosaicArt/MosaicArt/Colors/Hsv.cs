@@ -15,21 +15,21 @@ namespace MosaicArt.Colors
         /// <summary>
         /// 各パラメーターが0のインスタンスとして使用する。黒しては使用しない。
         /// </summary>
-        public static Hsv Zero => new Hsv(0, 0, 0);
+        public static Hsv Zero => new (0, 0, 0);
 
-        public static Hsv Black => new Hsv(0, 0, 0);
-        public static Hsv Blue => new Hsv(4f / 6f, 1, 1);
-        public static Hsv Cyan => new Hsv(3f / 6f, 1, 1);
-        public static Hsv Gray => new Hsv(0, 0, 0.5f);
-        public static Hsv Green => new Hsv(2f / 6f, 1, 1);
+        public static Hsv Black => new (0, 0, 0);
+        public static Hsv Blue => new (4f / 6f, 1, 1);
+        public static Hsv Cyan => new (3f / 6f, 1, 1);
+        public static Hsv Gray => new (0, 0, 0.5f);
+        public static Hsv Green => new (2f / 6f, 1, 1);
         /// <summary>
         /// English spelling for gray.
         /// </summary>
         public static Hsv Grey => Gray;
-        public static Hsv Magenta => new Hsv(5f / 6f, 1, 1);
-        public static Hsv Red => new Hsv(0, 1, 1);
-        public static Hsv White => new Hsv(0, 0, 1);
-        public static Hsv Yellow => new Hsv(1f / 6f, 1, 1);
+        public static Hsv Magenta => new (5f / 6f, 1, 1);
+        public static Hsv Red => new (0, 1, 1);
+        public static Hsv White => new (0, 0, 1);
+        public static Hsv Yellow => new (1f / 6f, 1, 1);
         #endregion 定数
 
         #region フィールド
@@ -135,7 +135,7 @@ namespace MosaicArt.Colors
             float b = v;
             if (s > 0)
             {
-                h = h * 6;
+                h *= 6;
                 int i = (int)h;
                 float f = h - (float)i;
                 switch (i)

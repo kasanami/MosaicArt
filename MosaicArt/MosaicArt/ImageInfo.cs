@@ -40,7 +40,7 @@ namespace MosaicArt
         /// <summary>
         /// 圧縮した画像
         /// </summary>
-        public RgbImage4x4 MiniImage = new();
+        public Rgb888Image4x4 MiniImage = new();
         /// <summary>
         /// 元画像の一時保存用
         /// </summary>
@@ -73,6 +73,7 @@ namespace MosaicArt
             Analyze(bitmap);
             MiniImage = new(bitmap);
         }
+#pragma warning disable CA1822 // メンバーを static に設定します
         private void Analyze(Bitmap bitmap)
         {
 #if ENABLE_SUM_COLOR
@@ -93,6 +94,7 @@ namespace MosaicArt
             AverageHsv = (Hsv)AverageRgb;
 #endif
         }
+#pragma warning restore CA1822 // メンバーを static に設定します
         /// <summary>
         /// 比較し結果を実数で返す。
         /// 0に近いほど近い情報。

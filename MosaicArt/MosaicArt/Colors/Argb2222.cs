@@ -28,12 +28,12 @@ namespace MosaicArt.Colors
         public const int GMax = 3;
         public const int BMax = 3;
 
-        public static readonly Argb2222 Zero = new Argb2222();
-        public static readonly Argb2222 Red = new Argb2222(RMax, 0, 0);
-        public static readonly Argb2222 Green = new Argb2222(0, GMax, 0);
-        public static readonly Argb2222 Blue = new Argb2222(0, 0, BMax);
-        public static readonly Argb2222 White = new Argb2222(RMax, GMax, BMax);
-        public static readonly Argb2222 Black = new Argb2222(0, 0, 0);
+        public static readonly Argb2222 Zero = new ();
+        public static readonly Argb2222 Red = new (RMax, 0, 0);
+        public static readonly Argb2222 Green = new (0, GMax, 0);
+        public static readonly Argb2222 Blue = new (0, 0, BMax);
+        public static readonly Argb2222 White = new (RMax, GMax, BMax);
+        public static readonly Argb2222 Black = new (0, 0, 0);
         #endregion 定数
 
         #region フィールド

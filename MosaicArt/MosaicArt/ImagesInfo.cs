@@ -30,7 +30,7 @@ namespace MosaicArt
             {
                 try
                 {
-                    Bitmap bitmap = new Bitmap(file);
+                    Bitmap bitmap = new (file);
                     ImageInfos.Add(new ImageInfo(file, bitmap));
                 }
                 catch (Exception ex)

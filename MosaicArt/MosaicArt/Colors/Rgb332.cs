@@ -22,12 +22,12 @@ namespace MosaicArt.Colors
         public const int GMax = 7;
         public const int BMax = 3;
 
-        public static readonly Rgb332 Zero = new Rgb332();
-        public static readonly Rgb332 Red = new Rgb332(RMax, 0, 0);
-        public static readonly Rgb332 Green = new Rgb332(0, GMax, 0);
-        public static readonly Rgb332 Blue = new Rgb332(0, 0, BMax);
-        public static readonly Rgb332 White = new Rgb332(RMax, GMax, BMax);
-        public static readonly Rgb332 Black = new Rgb332(0, 0, 0);
+        public static readonly Rgb332 Zero = new ();
+        public static readonly Rgb332 Red = new (RMax, 0, 0);
+        public static readonly Rgb332 Green = new (0, GMax, 0);
+        public static readonly Rgb332 Blue = new (0, 0, BMax);
+        public static readonly Rgb332 White = new (RMax, GMax, BMax);
+        public static readonly Rgb332 Black = new (0, 0, 0);
         #endregion 定数
 
         #region フィールド

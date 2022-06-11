@@ -13,21 +13,21 @@ namespace MosaicArt.Colors
         /// <summary>
         /// 各パラメーターが0のインスタンスとして使用する。黒しては使用しない。
         /// </summary>
-        public static Rgb Zero => new Rgb(0, 0, 0);
+        public static Rgb Zero => new (0, 0, 0);
 
-        public static Rgb Black => new Rgb(0, 0, 0);
-        public static Rgb Blue => new Rgb(0, 0, 1);
-        public static Rgb Cyan => new Rgb(0, 1, 1);
-        public static Rgb Gray => new Rgb(0.5f, 0.5f, 0.5f);
-        public static Rgb Green => new Rgb(0, 1, 0);
+        public static Rgb Black => new (0, 0, 0);
+        public static Rgb Blue => new (0, 0, 1);
+        public static Rgb Cyan => new (0, 1, 1);
+        public static Rgb Gray => new (0.5f, 0.5f, 0.5f);
+        public static Rgb Green => new (0, 1, 0);
         /// <summary>
         /// English spelling for gray.
         /// </summary>
         public static Rgb Grey => Gray;
-        public static Rgb Magenta => new Rgb(1, 0, 1);
-        public static Rgb Red => new Rgb(1, 0, 0);
-        public static Rgb White => new Rgb(1, 1, 1);
-        public static Rgb Yellow => new Rgb(1, 1, 0);
+        public static Rgb Magenta => new (1, 0, 1);
+        public static Rgb Red => new (1, 0, 0);
+        public static Rgb White => new (1, 1, 1);
+        public static Rgb Yellow => new (1, 1, 0);
         #endregion 定数
 
         public float R;
