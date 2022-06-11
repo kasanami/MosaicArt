@@ -8,16 +8,16 @@ namespace MosaicArt.Images
     /// RGB画像
     /// </summary>
     [MessagePackObject(true)]
-    public class RgbImage : BytesImage
+    public class Rgb888Image : BytesImage
     {
         /// <summary>
         /// 1ピクセル3バイト
         /// </summary>
         const int PixelSize = 3;
-        public RgbImage()
+        public Rgb888Image()
         {
         }
-        public RgbImage(Bitmap bitmap)
+        public Rgb888Image(Bitmap bitmap)
         {
             Width = bitmap.Width;
             Height = bitmap.Height;
@@ -32,7 +32,7 @@ namespace MosaicArt.Images
                 }
             }
         }
-        public RgbImage(Bitmap bitmap, int width, int height) : this(bitmap.Resize(width, height))
+        public Rgb888Image(Bitmap bitmap, int width, int height) : this(bitmap.Resize(width, height))
         {
         }
         public override Color GetPixel(int x, int y)
