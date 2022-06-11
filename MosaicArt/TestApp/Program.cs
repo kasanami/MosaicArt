@@ -11,6 +11,7 @@ using static MosaicArt.Utility;
 namespace MosaicArt.TestApp
 {
 #pragma warning disable CA1416 // プラットフォームの互換性を検証
+#pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
     static class Program
     {
         [STAThread]
@@ -61,7 +62,7 @@ namespace MosaicArt.TestApp
             }
 
             Console.WriteLine("素材分析");
-            ImagesInfo imagesInfo = new ImagesInfo();
+            ImagesInfo imagesInfo = new ();
             var directories = Directory.GetDirectories(param.ResourceDirectoryPath);
             foreach (var d in directories)
             {
@@ -113,7 +114,7 @@ namespace MosaicArt.TestApp
             Console.WriteLine("分析・設計図作成");
             try
             {
-                Bitmap bitmap = new Bitmap(param.TargetImagePath);
+                Bitmap bitmap = new (param.TargetImagePath);
                 var width = bitmap.Width;
                 var height = bitmap.Height;
                 var w = width / param.DivisionsX;
@@ -199,7 +200,7 @@ namespace MosaicArt.TestApp
             // モザイクアート生成
             Console.WriteLine("モザイクアート生成");
             {
-                Bitmap bitmap = new Bitmap(param.TargetImagePath);
+                Bitmap bitmap = new (param.TargetImagePath);
                 //Bitmap bitmap = new Bitmap(bluePrintWidth, bluePrintHeight);
                 var w = bitmap.Width / param.DivisionsX;
                 var h = bitmap.Height / param.DivisionsY;
@@ -254,7 +255,7 @@ namespace MosaicArt.TestApp
         {
             var directoryPath = Path.GetDirectoryName(imagePath) + "/" + Path.GetFileNameWithoutExtension(imagePath);
             Directory.CreateDirectory(directoryPath);
-            Bitmap bitmap = new Bitmap(imagePath);
+            Bitmap bitmap = new (imagePath);
             var width = bitmap.Width;
             var height = bitmap.Height;
             var w = bitmap.Width / divisionsX;
@@ -307,30 +308,28 @@ namespace MosaicArt.TestApp
             Console.WriteLine($"{path}, {count}");
             try
             {
-                using (var capture = new VideoCapture(path))
+                using var capture = new VideoCapture(path);
+                var directory = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
+                if (Directory.Exists(directory) == false)
                 {
-                    var directory = Path.GetDirectoryName(path) + "/" + Path.GetFileNameWithoutExtension(path);
-                    if (Directory.Exists(directory) == false)
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-                    var img = new Mat();
-                    var frameCount = capture.FrameCount - 1;// 実際に使えるのは1フレーム少ない
-                    var interval = frameCount / count;
-                    if (interval <= 0) { interval = 1; }
+                    Directory.CreateDirectory(directory);
+                }
+                var img = new Mat();
+                var frameCount = capture.FrameCount - 1;// 実際に使えるのは1フレーム少ない
+                var interval = frameCount / count;
+                if (interval <= 0) { interval = 1; }
 
-                    for (int i = 0; i < frameCount; i += interval)
-                    {
-                        capture.PosFrames = i;
-                        capture.Read(img);
-                        var bitmap = BitmapConverter.ToBitmap(img);
+                for (int i = 0; i < frameCount; i += interval)
+                {
+                    capture.PosFrames = i;
+                    capture.Read(img);
+                    var bitmap = BitmapConverter.ToBitmap(img);
 
-                        var width = bitmap.Width / 10;
-                        var height = bitmap.Height / 10;
-                        var resizeBitmap = new Bitmap(bitmap, width, height);
-                        resizeBitmap.Save($@"{directory}/{i}.png", ImageFormat.Png);
-                        Console.WriteLine($"PosFrames={i}");
-                    }
+                    var width = bitmap.Width / 10;
+                    var height = bitmap.Height / 10;
+                    var resizeBitmap = new Bitmap(bitmap, width, height);
+                    resizeBitmap.Save($@"{directory}/{i}.png", ImageFormat.Png);
+                    Console.WriteLine($"PosFrames={i}");
                 }
             }
             catch (Exception ex)
@@ -348,5 +347,6 @@ namespace MosaicArt.TestApp
             Console.WriteLine($"StackTrace:{ex.StackTrace}");
         }
     }
+#pragma warning restore IDE0051 // 使用されていないプライベート メンバーを削除する
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
 }
