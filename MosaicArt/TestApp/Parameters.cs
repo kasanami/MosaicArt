@@ -27,7 +27,7 @@ namespace MosaicArt.TestApp
         /// <summary>
         /// 目標画像のパス
         /// </summary>
-        public string TargetPath = "";
+        public string TargetImagePath = "";
         /// <summary>
         /// 目標画像の横軸の分割数
         /// </summary>
