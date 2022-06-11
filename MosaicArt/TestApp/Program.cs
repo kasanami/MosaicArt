@@ -18,18 +18,19 @@ namespace MosaicArt.TestApp
         {
             DateTime startTime = DateTime.Now;
             Console.WriteLine($"開始 {startTime}");
-            // 分割数
-            int divisionsX = 100;
-            int divisionsY = 100;
-            const int MovieSliceCount = 300;
-            bool IsRemakeResource = false;// 素材を再作成するならtrue
 
             var parallelOptions = new ParallelOptions() { MaxDegreeOfParallelism = 8 };
+            const int RandomSeed = 123456789;
+            const string ResourceDirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
+            const int MovieSliceCount = 300;
+            const string TargetImagePath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.jpg";
+            const int DivisionsX = 100;
+            const int DivisionsY = 100;
+            bool IsRemakeResource = false;// 素材を再作成するならtrue
+            var random = new Random(RandomSeed);
 
-            const string DirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
             //var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\マリン出航！_3500x2000.png";
-            var targetPath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter4000x4000.jpg";
-            Console.WriteLine($"{nameof(targetPath)}={targetPath}");
+            Console.WriteLine($"{nameof(TargetImagePath)}={TargetImagePath}");
 
 #if false
             {
@@ -45,7 +46,7 @@ namespace MosaicArt.TestApp
 
             Console.WriteLine("素材作成");
             {
-                var files = Directory.GetFiles(DirectoryPath, "*.mp4");
+                var files = Directory.GetFiles(ResourceDirectoryPath, "*.mp4");
                 foreach (var file in files)
                 {
                     var directory = Path.GetDirectoryName(file) + "/" + Path.GetFileNameWithoutExtension(file);
@@ -58,7 +59,7 @@ namespace MosaicArt.TestApp
 
             Console.WriteLine("素材分析");
             ImagesInfo imagesInfo = new ImagesInfo();
-            var directories = Directory.GetDirectories(DirectoryPath);
+            var directories = Directory.GetDirectories(ResourceDirectoryPath);
             foreach (var d in directories)
             {
                 bool newCreate = true;
@@ -109,19 +110,19 @@ namespace MosaicArt.TestApp
             Console.WriteLine("分析・設計図作成");
             try
             {
-                Bitmap bitmap = new Bitmap(targetPath);
+                Bitmap bitmap = new Bitmap(TargetImagePath);
                 var width = bitmap.Width;
                 var height = bitmap.Height;
-                var w = width / divisionsX;
-                var h = height / divisionsY;
-                if (width % divisionsX != 0)
+                var w = width / DivisionsX;
+                var h = height / DivisionsY;
+                if (width % DivisionsX != 0)
                 {
-                    Console.WriteLine($"{nameof(width)}が{divisionsX}の倍数ではありません。");
+                    Console.WriteLine($"{nameof(width)}が{DivisionsX}の倍数ではありません。");
                     return;
                 }
-                if (height % divisionsY != 0)
+                if (height % DivisionsY != 0)
                 {
-                    Console.WriteLine($"{nameof(height)}が{divisionsY}の倍数ではありません。");
+                    Console.WriteLine($"{nameof(height)}が{DivisionsY}の倍数ではありません。");
                     return;
                 }
 
@@ -134,7 +135,6 @@ namespace MosaicArt.TestApp
                             points.Add(new System.Drawing.Point(x, y));
                         }
                     }
-                    Random random = new Random(123456789);
                     Shuffle(points, random);
                 }
                 Console.WriteLine($"{nameof(points.Count)}={points.Count}");
@@ -184,13 +184,22 @@ namespace MosaicArt.TestApp
                 ConsoleWrite(ex);
                 return;
             }
+            // 保存パス
+            var destinationPath = Path.GetDirectoryName(TargetImagePath);
+            {
+                destinationPath += "/";
+                destinationPath += Path.GetFileNameWithoutExtension(TargetImagePath);
+                destinationPath += "_MosaicArt";
+                destinationPath += DateTime.Now.ToString("(yyyyMMdd_HHmmss)");
+                destinationPath += ".png";
+            }
             // モザイクアート生成
             Console.WriteLine("モザイクアート生成");
             {
-                Bitmap bitmap = new Bitmap(targetPath);
+                Bitmap bitmap = new Bitmap(TargetImagePath);
                 //Bitmap bitmap = new Bitmap(bluePrintWidth, bluePrintHeight);
-                var w = bitmap.Width / divisionsX;
-                var h = bitmap.Height / divisionsY;
+                var w = bitmap.Width / DivisionsX;
+                var h = bitmap.Height / DivisionsY;
                 using (Graphics graphics = Graphics.FromImage(bitmap))
                 {
                     //graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;// ぼやける
@@ -221,16 +230,30 @@ namespace MosaicArt.TestApp
                     }
                 }
                 // 保存
-                var destinationPath = Path.GetDirectoryName(targetPath);
-                destinationPath += "/";
-                destinationPath += Path.GetFileNameWithoutExtension(targetPath);
-                destinationPath += "_MosaicArt.png";
-                destinationPath += DateTime.Now.ToString("(yyyyMMdd_HHmmss)");
-                destinationPath += ".png";
                 bitmap.Save(destinationPath, ImageFormat.Png);
             }
             DateTime endTime = DateTime.Now;
             Console.WriteLine($"完了 処理時間:{(endTime - startTime)}");
+            // レポート保存
+            {
+                Parameters parameters = new ();
+                parameters.MaxDegreeOfParallelism = parallelOptions.MaxDegreeOfParallelism;
+                parameters.RandomSeed = RandomSeed;
+                parameters.ResourceDirectoryPath = ResourceDirectoryPath;
+                parameters.MovieSliceCount = MovieSliceCount;
+                parameters.TargetPath = TargetImagePath;
+                parameters.DivisionsX = DivisionsX;
+                parameters.DivisionsY = DivisionsY;
+
+                Report report = new ();
+                report.StartTime = startTime;
+                report.EndTime = endTime;
+                report.ElapsedTime = endTime - startTime;
+                report.Parameters = parameters;
+
+                destinationPath += ".report.json";
+                report.Save(destinationPath);
+            }
         }
 
         static void ImageSlicer(string imagePath, int divisionsX, int divisionsY)
