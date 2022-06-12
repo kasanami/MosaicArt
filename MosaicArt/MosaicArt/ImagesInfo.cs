@@ -12,7 +12,7 @@ namespace MosaicArt
     public class ImagesInfo : VersionInfo
     {
         #region 定数
-        public const int CurrentVersion = 1;
+        public const int CurrentVersion = 2;
         /// <summary>
         /// 拡張子
         /// </summary>

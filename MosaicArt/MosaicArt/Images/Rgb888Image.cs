@@ -37,7 +37,7 @@ namespace MosaicArt.Images
         }
         public override Color GetPixel(int x, int y)
         {
-            int offset = ((y * Width) + x) * PixelSize;
+            int offset = GetPixelOffset(x, y, PixelSize);
             var r = Bytes[offset + 0];
             var g = Bytes[offset + 1];
             var b = Bytes[offset + 2];
@@ -45,7 +45,7 @@ namespace MosaicArt.Images
         }
         public override void SetPixel(int x, int y, Color color)
         {
-            int offset = ((y * Width) + x) * PixelSize;
+            int offset = GetPixelOffset(x, y, PixelSize);
             Bytes[offset + 0] = color.R;
             Bytes[offset + 1] = color.G;
             Bytes[offset + 2] = color.B;

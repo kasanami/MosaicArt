@@ -12,6 +12,8 @@ namespace MosaicArt.TestApp
         public DateTime StartTime;
         public DateTime EndTime;
         public TimeSpan ElapsedTime;
+        public int MiniImageWidth;
+        public int MiniImageHeight;
 
         public Parameters Parameters = new();
 

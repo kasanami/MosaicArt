@@ -25,7 +25,7 @@ namespace MosaicArt.TestApp
             param.RandomSeed = 123456789;
             param.ResourceDirectoryPath = @"D:\Develop\Projects\MosaicArt\TestData\Resource";
             param.MovieSliceCount = 300;
-            param.TargetImagePath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.jpg";
+            param.TargetImagePath = @"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon4000x4000.jpg";
             param.DivisionsX = 100;
             param.DivisionsY = 100;
 
@@ -38,13 +38,15 @@ namespace MosaicArt.TestApp
 
 #if false
             {
-                Bitmap bitmap = new Bitmap(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.jpg");
+                Bitmap bitmap = new Bitmap(@"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon.jpg");
                 BrightnessImage brightnessImage = new(bitmap);
-                brightnessImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.brightness.png", ImageFormat.Png);
+                brightnessImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon.brightness.png", ImageFormat.Png);
                 HueImage hueImage = new(bitmap);
-                hueImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.hue.png", ImageFormat.Png);
+                hueImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon.hue.png", ImageFormat.Png);
                 RgbImage rgbImage = new(bitmap);
-                rgbImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\Twitter400x400.rgb.png", ImageFormat.Png);
+                rgbImage.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon.rgb.png", ImageFormat.Png);
+                Rgb332Image rgb332Image = new(bitmap);
+                rgb332Image.Save(@"D:\Develop\Projects\MosaicArt\TestData\Target0\YoutubeIcon.rgb332.png", ImageFormat.Png);
             }
 #endif
 
@@ -244,6 +246,8 @@ namespace MosaicArt.TestApp
                 report.StartTime = startTime;
                 report.EndTime = endTime;
                 report.ElapsedTime = endTime - startTime;
+                report.MiniImageWidth = 8;
+                report.MiniImageHeight = 8;
                 report.Parameters = param;
 
                 destinationPath += ".report.json";

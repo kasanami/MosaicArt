@@ -40,7 +40,7 @@ namespace MosaicArt
         /// <summary>
         /// 圧縮した画像
         /// </summary>
-        public Rgb888Image4x4 MiniImage = new();
+        public Rgb888Image8x8 MiniImage = new();
         /// <summary>
         /// 元画像の一時保存用
         /// </summary>
