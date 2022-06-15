@@ -55,6 +55,11 @@ namespace MosaicArt
         [IgnoreMember]
         public Bitmap? Bitmap = null;
         /// <summary>
+        /// 比較用の画像
+        /// </summary>
+        [IgnoreMember]
+        public Bitmap? BitmapForComparison = null;
+        /// <summary>
         /// 予約済み
         /// </summary>
         [IgnoreMember]
@@ -133,7 +138,16 @@ namespace MosaicArt
             {
                 return double.PositiveInfinity;
             }
-            return SquaredDistance(bitmap0, bitmap1);
+            // サイズを合わせた比較用画像
+            if (BitmapForComparison == null)
+            {
+                BitmapForComparison = new Bitmap(bitmap0, bitmap1.Width, bitmap1.Height);
+            }
+            else if (BitmapForComparison.Width != bitmap1.Width || BitmapForComparison.Height != bitmap1.Height)
+            {
+                BitmapForComparison = new Bitmap(bitmap0, bitmap1.Width, bitmap1.Height);
+            }
+            return SquaredDistance(BitmapForComparison, bitmap1);
         }
         /// <summary>
         /// 速い比較。そのかわりに厳密ではない。
@@ -141,6 +155,16 @@ namespace MosaicArt
         public double FastCompare(ImageInfo other)
         {
             return SquaredDistance(MiniImage, other.MiniImage);
+        }
+        /// <summary>
+        /// Bitmapがなければ読み込む
+        /// </summary>
+        public void LoadBitmapIfNull()
+        {
+            if (Bitmap == null)
+            {
+                Bitmap = new(Path);
+            }
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証

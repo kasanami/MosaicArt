@@ -1,6 +1,8 @@
 ﻿using MosaicArt.Colors;
 using MosaicArt.Images;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace MosaicArt
 {
@@ -33,6 +35,18 @@ namespace MosaicArt
             var b = color0.B - color1.B;
             var a = color0.A - color1.A;
             return r * r + g * g + b * b + a * a;
+        }
+        /// <summary>
+        /// 色空間内での距離の2乗
+        /// ※Color の各値の範囲は 0～255 なので注意
+        /// </summary
+        /// <returns>0～260100の値</returns>
+        public static int SquaredDistance(byte r0, byte g0, byte b0, byte r1, byte g1, byte b1)
+        {
+            var r = r0 - r1;
+            var g = g0 - g1;
+            var b = b0 - b1;
+            return r * r + g * g + b * b;
         }
         /// <summary>
         /// 色空間内での距離
@@ -74,21 +88,22 @@ namespace MosaicArt
         #endregion Color
 
         #region Image
+#pragma warning disable CA1416 // プラットフォームの互換性を検証
         /// <summary>
         /// 色空間内での距離の2乗
         /// </summary
         public static double SquaredDistance(Bitmap image0, Bitmap image1)
         {
             double sum = 0;
-#pragma warning disable CA1416 // プラットフォームの互換性を検証
             lock (image0)
             {
                 lock (image1)
                 {
                     if (image0.Width != image1.Width || image0.Height != image1.Height)
                     {
-                        image1 = image1.Resize(image0.Width, image0.Height);
+                        throw new ArgumentException($"画像のサイズが一致していません。{image0.Size}!={image1.Size}");
                     }
+#if true
                     for (int y = 0; y < image0.Height; y++)
                     {
                         for (int x = 0; x < image0.Width; x++)
@@ -98,11 +113,34 @@ namespace MosaicArt
                             sum += SquaredDistance(color0, color1);
                         }
                     }
+#else
+                    // ほとんど差がない
+                    BitmapData bitmapData0 = image0.LockBits(
+                        new Rectangle(0, 0, image0.Width, image0.Height), ImageLockMode.ReadOnly, image0.PixelFormat);
+                    BitmapData bitmapData1 = image1.LockBits(
+                        new Rectangle(0, 0, image1.Width, image1.Height), ImageLockMode.ReadOnly, image1.PixelFormat);
+                    var pixelCount0 = image0.Width * image0.Height;
+                    unsafe
+                    {
+                        for (int i = 0; i < pixelCount0; i++)
+                        {
+                            var r0 = Marshal.ReadByte(bitmapData0.Scan0, i + 0);
+                            var g0 = Marshal.ReadByte(bitmapData0.Scan0, i + 1);
+                            var b0 = Marshal.ReadByte(bitmapData0.Scan0, i + 2);
+                            var r1 = Marshal.ReadByte(bitmapData1.Scan0, i + 0);
+                            var g1 = Marshal.ReadByte(bitmapData1.Scan0, i + 1);
+                            var b1 = Marshal.ReadByte(bitmapData1.Scan0, i + 2);
+                            sum += SquaredDistance(r0, g0, b0, r1, g1, b1);
+                        }
+                    }
+                    image0.UnlockBits(bitmapData0);
+                    image1.UnlockBits(bitmapData1);
+#endif
                 }
             }
-#pragma warning restore CA1416 // プラットフォームの互換性を検証
             return sum;
         }
+#pragma warning restore CA1416 // プラットフォームの互換性を検証
         /// <summary>
         /// 色空間内での距離
         /// </summary

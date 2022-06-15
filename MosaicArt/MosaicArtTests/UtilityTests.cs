@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using MosaicArt;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -28,6 +29,31 @@ namespace MosaicArt.Tests
             color0 = Color.FromArgb(0, 0, 0, 0);
             color1 = Color.White;
             Assert.AreEqual(510, Utility.Distance(color0, color1));
+        }
+        [TestMethod()]
+        public void SquaredDistanceTest()
+        {
+            // Bitmap
+            {
+#pragma warning disable CA1416 // プラットフォームの互換性を検証
+                Bitmap bitmap0 = new(1, 1);
+                Bitmap bitmap1 = new(1, 1);
+                bitmap0.SetPixel(0, 0, Color.Black);
+                bitmap1.SetPixel(0, 0, Color.Black);
+                var squaredDistance = Utility.SquaredDistance(bitmap0, bitmap1);
+                Assert.AreEqual(0, squaredDistance);
+
+                bitmap0.SetPixel(0, 0, Color.Black);
+                bitmap1.SetPixel(0, 0, Color.Red);
+                squaredDistance = Utility.SquaredDistance(bitmap0, bitmap1);
+                Assert.AreEqual(255 * 255 * 1, squaredDistance);
+
+                bitmap0.SetPixel(0, 0, Color.Black);
+                bitmap1.SetPixel(0, 0, Color.White);
+                squaredDistance = Utility.SquaredDistance(bitmap0, bitmap1);
+                Assert.AreEqual(255 * 255 * 3, squaredDistance);
+#pragma warning restore CA1416 // プラットフォームの互換性を検証
+            }
         }
         [TestMethod()]
         public void CountOneTest()
