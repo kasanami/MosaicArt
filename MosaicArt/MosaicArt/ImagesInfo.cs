@@ -17,6 +17,10 @@ namespace MosaicArt
         /// 拡張子
         /// </summary>
         public const string PathExtension = ".imagesinfo";
+        /// <summary>
+        /// FastCompareで絞り込む数
+        /// </summary>
+        public const int FastCompareCount = 10;
         #endregion 定数
 
         public List<ImageInfo> ImageInfos { get; init; } = new List<ImageInfo>();
@@ -118,7 +122,7 @@ namespace MosaicArt
             // 予約済みは除外
             imageInfos = imageInfos.Where(item => item.IsReserved == false);
             // 高速比較である程度絞り込む
-            count = Math.Min(10, imageInfos.Count());
+            count = Math.Min(FastCompareCount, imageInfos.Count());
             imageInfos = imageInfos.OrderBy(item => item.FastCompare(imageInfo)).Take(count);
             // 厳密に選ぶ
             return imageInfos.MinBy(item => item.Compare(imageInfo));
