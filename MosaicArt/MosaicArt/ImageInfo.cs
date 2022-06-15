@@ -58,7 +58,7 @@ namespace MosaicArt
         /// 比較用の画像
         /// </summary>
         [IgnoreMember]
-        public Bitmap? BitmapForComparison = null;
+        public Rgb888Image? BitmapForComparison = null;
         /// <summary>
         /// 予約済み
         /// </summary>
@@ -141,13 +141,17 @@ namespace MosaicArt
             // サイズを合わせた比較用画像
             if (BitmapForComparison == null)
             {
-                BitmapForComparison = new Bitmap(bitmap0, bitmap1.Width, bitmap1.Height);
+                BitmapForComparison = new (bitmap0, bitmap1.Width, bitmap1.Height);
             }
             else if (BitmapForComparison.Width != bitmap1.Width || BitmapForComparison.Height != bitmap1.Height)
             {
-                BitmapForComparison = new Bitmap(bitmap0, bitmap1.Width, bitmap1.Height);
+                BitmapForComparison = new (bitmap0, bitmap1.Width, bitmap1.Height);
             }
-            return SquaredDistance(BitmapForComparison, bitmap1);
+            if (other.BitmapForComparison == null)
+            {
+                other.BitmapForComparison = new(bitmap1, bitmap1.Width, bitmap1.Height);
+            }
+            return SquaredDistance(BitmapForComparison, other.BitmapForComparison);
         }
         /// <summary>
         /// 速い比較。そのかわりに厳密ではない。

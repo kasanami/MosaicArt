@@ -64,7 +64,7 @@ namespace MosaicArt.TestApp
             }
 
             Console.WriteLine("素材分析");
-            ImagesInfo imagesInfo = new ();
+            ImagesInfo imagesInfo = new();
             var directories = Directory.GetDirectories(param.ResourceDirectoryPath);
             foreach (var d in directories)
             {
@@ -113,10 +113,9 @@ namespace MosaicArt.TestApp
             int bluePrintWidth;
             int bluePrintHeight;
             // targetの分析、resourceと比較
-            Console.WriteLine("分析・設計図作成");
             try
             {
-                Bitmap bitmap = new (param.TargetImagePath);
+                Bitmap bitmap = new(param.TargetImagePath);
                 var width = bitmap.Width;
                 var height = bitmap.Height;
                 var w = width / param.DivisionsX;
@@ -132,18 +131,26 @@ namespace MosaicArt.TestApp
                     return;
                 }
 
+                Console.WriteLine($"ピース作成");
+
                 List<System.Drawing.Point> points = new();
+                Dictionary<System.Drawing.Point, Bitmap> pieces = new();
                 {
                     for (int y = 0; y < height; y += h)
                     {
                         for (int x = 0; x < width; x += w)
                         {
-                            points.Add(new System.Drawing.Point(x, y));
+                            //Console.WriteLine($"{x}x{y}");
+                            var point = new System.Drawing.Point(x, y);
+                            points.Add(point);
+                            pieces.Add(point, bitmap.Clip(new Rectangle(x, y, w, h)));
                         }
                     }
                     Shuffle(points, random);
                 }
                 Console.WriteLine($"{nameof(points.Count)}={points.Count}");
+                Console.WriteLine($"現在の処理時間:{(DateTime.Now - startTime)}");
+                Console.WriteLine("分析・設計図作成");
 #if ENABLE_PARALLELS
                 Parallel.For(0, points.Count, parallelOptions, i =>
                 {
@@ -155,12 +162,11 @@ namespace MosaicArt.TestApp
 #endif
                     var x = point.X;
                     var y = point.Y;
-                    Console.WriteLine($"{i}:{x}x{y}");
-                    var rect = new Rectangle(x, y, w, h);
+                    //Console.WriteLine($"{i}:{x}x{y}");
                     Bitmap clippedBitmap;
-                    lock (bitmap)
+                    lock (pieces)
                     {
-                        clippedBitmap = bitmap.Clip(rect);
+                        clippedBitmap = pieces[point];
                     }
                     var imageInfo = new ImageInfo(clippedBitmap);
                     // 最も近い画像を選ぶ
@@ -202,7 +208,7 @@ namespace MosaicArt.TestApp
             // モザイクアート生成
             Console.WriteLine("モザイクアート生成");
             {
-                Bitmap bitmap = new (param.TargetImagePath);
+                Bitmap bitmap = new(param.TargetImagePath);
                 //Bitmap bitmap = new Bitmap(bluePrintWidth, bluePrintHeight);
                 var w = bitmap.Width / param.DivisionsX;
                 var h = bitmap.Height / param.DivisionsY;
@@ -260,7 +266,7 @@ namespace MosaicArt.TestApp
         {
             var directoryPath = Path.GetDirectoryName(imagePath) + "/" + Path.GetFileNameWithoutExtension(imagePath);
             Directory.CreateDirectory(directoryPath);
-            Bitmap bitmap = new (imagePath);
+            Bitmap bitmap = new(imagePath);
             var width = bitmap.Width;
             var height = bitmap.Height;
             var w = bitmap.Width / divisionsX;
