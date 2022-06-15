@@ -14,6 +14,7 @@ namespace MosaicArt.TestApp
         public TimeSpan ElapsedTime;
         public int MiniImageWidth;
         public int MiniImageHeight;
+        public int FastCompareCount;
 
         public Parameters Parameters = new();
 

@@ -246,8 +246,9 @@ namespace MosaicArt.TestApp
                 report.StartTime = startTime;
                 report.EndTime = endTime;
                 report.ElapsedTime = endTime - startTime;
-                report.MiniImageWidth = 8;
-                report.MiniImageHeight = 8;
+                report.MiniImageWidth = ImageInfo.MiniImageWidth;
+                report.MiniImageHeight = ImageInfo.MiniImageHeight;
+                report.FastCompareCount = ImagesInfo.FastCompareCount;
                 report.Parameters = param;
 
                 destinationPath += ".report.json";

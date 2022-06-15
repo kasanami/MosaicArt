@@ -15,6 +15,14 @@ namespace MosaicArt
     [MessagePackObject(true)]
     public class ImageInfo
     {
+        /// <summary>
+        /// 圧縮した画像の幅
+        /// </summary>
+        public const int MiniImageWidth = 8;
+        /// <summary>
+        /// 圧縮した画像の高さ
+        /// </summary>
+        public const int MiniImageHeight = 8;
 
         /// <summary>
         /// ファイルとして保存されている場合のパス。
@@ -40,7 +48,7 @@ namespace MosaicArt
         /// <summary>
         /// 圧縮した画像
         /// </summary>
-        public Rgb888Image8x8 MiniImage = new();
+        public Rgb888Image MiniImage = new();
         /// <summary>
         /// 元画像の一時保存用
         /// </summary>
@@ -62,7 +70,7 @@ namespace MosaicArt
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
-            MiniImage = new(bitmap);
+            MiniImage = new(bitmap, MiniImageWidth, MiniImageHeight);
         }
         public ImageInfo(string path, Bitmap bitmap)
         {
@@ -71,7 +79,7 @@ namespace MosaicArt
             Width = bitmap.Width;
             Height = bitmap.Height;
             Analyze(bitmap);
-            MiniImage = new(bitmap);
+            MiniImage = new(bitmap, MiniImageWidth, MiniImageHeight);
         }
 #pragma warning disable CA1822 // メンバーを static に設定します
         private void Analyze(Bitmap bitmap)
