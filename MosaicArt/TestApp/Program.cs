@@ -1,4 +1,4 @@
-﻿#define ENABLE_PARALLELS
+﻿//#define ENABLE_PARALLELS
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -136,14 +136,29 @@ namespace MosaicArt.TestApp
                 List<System.Drawing.Point> points = new();
                 Dictionary<System.Drawing.Point, Bitmap> pieces = new();
                 {
+                    var directoryPath = Path.GetDirectoryName(param.TargetImagePath) + "/" +
+                        Path.GetFileNameWithoutExtension(param.TargetImagePath) +
+                        $"_{param.DivisionsX}x{param.DivisionsY}";
+                    Directory.CreateDirectory(directoryPath);
                     for (int y = 0; y < height; y += h)
                     {
                         for (int x = 0; x < width; x += w)
                         {
                             //Console.WriteLine($"{x}x{y}");
+                            Bitmap pieceImage = null;
+                            var path = directoryPath + $"/{x}_{y}.png";
+                            if (File.Exists(path))
+                            {
+                                pieceImage = new(path);
+                            }
+                            if (pieceImage == null)
+                            {
+                                pieceImage = bitmap.Clip(new Rectangle(x, y, w, h));
+                                pieceImage.Save(path, ImageFormat.Png);
+                            }
                             var point = new System.Drawing.Point(x, y);
                             points.Add(point);
-                            pieces.Add(point, bitmap.Clip(new Rectangle(x, y, w, h)));
+                            pieces.Add(point, pieceImage);
                         }
                     }
                     Shuffle(points, random);
@@ -151,10 +166,12 @@ namespace MosaicArt.TestApp
                 Console.WriteLine($"{nameof(points.Count)}={points.Count}");
                 Console.WriteLine($"現在の処理時間:{(DateTime.Now - startTime)}");
                 Console.WriteLine("分析・設計図作成");
+                var pointAry = points.ToArray();
+                var pointCount = pointAry.Length;
 #if ENABLE_PARALLELS
-                Parallel.For(0, points.Count, parallelOptions, i =>
+                Parallel.For(0, pointCount, parallelOptions, i =>
                 {
-                    var point = points[i];
+                    var point = pointAry[i];
 #else
                 int i = 0;
                 foreach (var point in points)
@@ -169,6 +186,7 @@ namespace MosaicArt.TestApp
                         clippedBitmap = pieces[point];
                     }
                     var imageInfo = new ImageInfo(clippedBitmap);
+                    imageInfo.MakeComparisonImage();
                     // 最も近い画像を選ぶ
                     var nearImageInfo = imagesInfo.GetNear(imageInfo);
                     if (nearImageInfo != null)
@@ -264,7 +282,7 @@ namespace MosaicArt.TestApp
 
         static void ImageSlicer(string imagePath, int divisionsX, int divisionsY)
         {
-            var directoryPath = Path.GetDirectoryName(imagePath) + "/" + Path.GetFileNameWithoutExtension(imagePath);
+            var directoryPath = Path.GetDirectoryName(imagePath) + "/" + Path.GetFileNameWithoutExtension(imagePath) + $"_{divisionsX}x{divisionsY}";
             Directory.CreateDirectory(directoryPath);
             Bitmap bitmap = new(imagePath);
             var width = bitmap.Width;

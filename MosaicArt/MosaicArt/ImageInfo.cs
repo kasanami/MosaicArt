@@ -58,7 +58,7 @@ namespace MosaicArt
         /// 比較用の画像
         /// </summary>
         [IgnoreMember]
-        public Rgb888Image? BitmapForComparison = null;
+        public Rgb888Image? ComparisonImage = null;
         /// <summary>
         /// 予約済み
         /// </summary>
@@ -114,44 +114,18 @@ namespace MosaicArt
         /// </summary>
         public double Compare(ImageInfo other)
         {
-            Bitmap? bitmap0 = null;
-            Bitmap? bitmap1 = null;
-            if (Bitmap != null)
+            // 比較用画像生成
+            if (ComparisonImage == null)
             {
-                bitmap0 = Bitmap;
+                MakeComparisonImage(other.Width, other.Height);
             }
-            else if (string.IsNullOrEmpty(Path) == false)
+            if (other.ComparisonImage == null)
             {
-                Bitmap = new(Path);
-                bitmap0 = Bitmap;
+                other.MakeComparisonImage();
             }
-            if (other.Bitmap != null)
-            {
-                bitmap1 = other.Bitmap;
-            }
-            else if (string.IsNullOrEmpty(other.Path) == false)
-            {
-                other.Bitmap = new(other.Path);
-                bitmap1 = other.Bitmap;
-            }
-            if (bitmap0 == null || bitmap1 == null)
-            {
-                return double.PositiveInfinity;
-            }
-            // サイズを合わせた比較用画像
-            if (BitmapForComparison == null)
-            {
-                BitmapForComparison = new (bitmap0, bitmap1.Width, bitmap1.Height);
-            }
-            else if (BitmapForComparison.Width != bitmap1.Width || BitmapForComparison.Height != bitmap1.Height)
-            {
-                BitmapForComparison = new (bitmap0, bitmap1.Width, bitmap1.Height);
-            }
-            if (other.BitmapForComparison == null)
-            {
-                other.BitmapForComparison = new(bitmap1, bitmap1.Width, bitmap1.Height);
-            }
-            return SquaredDistance(BitmapForComparison, other.BitmapForComparison);
+#pragma warning disable CS8604 // Null 参照引数の可能性があります。
+            return SquaredDistance(ComparisonImage, other.ComparisonImage);
+#pragma warning restore CS8604 // Null 参照引数の可能性があります。
         }
         /// <summary>
         /// 速い比較。そのかわりに厳密ではない。
@@ -169,6 +143,62 @@ namespace MosaicArt
             {
                 Bitmap = new(Path);
             }
+        }
+        /// <summary>
+        /// 比較用画像を作成
+        /// </summary>
+        /// <returns>true:成功　false:元画像が無くて失敗</returns>
+        public bool MakeComparisonImage()
+        {
+            if (Bitmap == null)
+            {
+                if (string.IsNullOrEmpty(Path))
+                {
+                    return false;
+                }
+                Bitmap = new(Path);
+            }
+            if(ComparisonImage == null)
+            {
+                // まだ作ってない→作成
+                ComparisonImage = new(Bitmap);
+            }
+            else if (Bitmap.Width == ComparisonImage.Width && Bitmap.Height == ComparisonImage.Width)
+            {
+                // 作成不要
+            }
+            else
+            {
+                // サイズがあってない→作成
+                ComparisonImage = new(Bitmap);
+            }
+            return true;
+        }
+        /// <summary>
+        /// 比較用画像を作成
+        /// </summary>
+        /// <param name="width">比較相手画像の幅</param>
+        /// <param name="height">比較相手画像の高さ</param>
+        /// <returns>true:成功　false:元画像が無くて失敗</returns>
+        public bool MakeComparisonImage(int width, int height)
+        {
+            if (Bitmap == null)
+            {
+                if (string.IsNullOrEmpty(Path))
+                {
+                    return false;
+                }
+                Bitmap = new(Path);
+            }
+            if (Bitmap.Width == width && Bitmap.Height == height)
+            {
+                ComparisonImage = new(Bitmap);
+            }
+            else
+            {
+                ComparisonImage = new(Bitmap, width, height);
+            }
+            return true;
         }
     }
 #pragma warning restore CA1416 // プラットフォームの互換性を検証
