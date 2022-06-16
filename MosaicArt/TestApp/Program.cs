@@ -1,4 +1,4 @@
-﻿//#define ENABLE_PARALLELS
+﻿#define ENABLE_PARALLELS
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -166,12 +166,9 @@ namespace MosaicArt.TestApp
                 Console.WriteLine($"{nameof(points.Count)}={points.Count}");
                 Console.WriteLine($"現在の処理時間:{(DateTime.Now - startTime)}");
                 Console.WriteLine("分析・設計図作成");
-                var pointAry = points.ToArray();
-                var pointCount = pointAry.Length;
 #if ENABLE_PARALLELS
-                Parallel.For(0, pointCount, parallelOptions, i =>
+                Parallel.ForEach(points, parallelOptions, point =>
                 {
-                    var point = pointAry[i];
 #else
                 int i = 0;
                 foreach (var point in points)

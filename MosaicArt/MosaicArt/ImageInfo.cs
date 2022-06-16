@@ -158,7 +158,7 @@ namespace MosaicArt
                 }
                 Bitmap = new(Path);
             }
-            if(ComparisonImage == null)
+            if (ComparisonImage == null)
             {
                 // まだ作ってない→作成
                 ComparisonImage = new(Bitmap);
@@ -182,21 +182,24 @@ namespace MosaicArt
         /// <returns>true:成功　false:元画像が無くて失敗</returns>
         public bool MakeComparisonImage(int width, int height)
         {
-            if (Bitmap == null)
+            lock (this)
             {
-                if (string.IsNullOrEmpty(Path))
+                if (Bitmap == null)
                 {
-                    return false;
+                    if (string.IsNullOrEmpty(Path))
+                    {
+                        return false;
+                    }
+                    Bitmap = new(Path);
                 }
-                Bitmap = new(Path);
-            }
-            if (Bitmap.Width == width && Bitmap.Height == height)
-            {
-                ComparisonImage = new(Bitmap);
-            }
-            else
-            {
-                ComparisonImage = new(Bitmap, width, height);
+                if (Bitmap.Width == width && Bitmap.Height == height)
+                {
+                    ComparisonImage = new(Bitmap);
+                }
+                else
+                {
+                    ComparisonImage = new(Bitmap, width, height);
+                }
             }
             return true;
         }
