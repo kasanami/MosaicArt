@@ -1,8 +1,10 @@
 ﻿using MessagePack;
+using System.Drawing;
 using System.Text;
 
 namespace MosaicArt.TestApp
 {
+#pragma warning disable CS8625 // null リテラルを null 非許容参照型に変換できません。
     [MessagePackObject(true)]
     public class Parameters
     {
@@ -43,4 +45,5 @@ namespace MosaicArt.TestApp
             File.WriteAllText(path, json, Encoding.UTF8);
         }
     }
+#pragma warning restore CS8625 // null リテラルを null 非許容参照型に変換できません。
 }
